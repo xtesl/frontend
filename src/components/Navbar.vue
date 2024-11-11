@@ -1,7 +1,6 @@
 <script setup>
-import { RouterLink } from 'vue-router';
-import { ref } from 'vue';
-
+import { RouterLink } from "vue-router";
+import { ref } from "vue";
 
 // Modal visibility control
 const showLoginModal = ref(false);
@@ -9,78 +8,156 @@ const showSignUpModal = ref(false);
 </script>
 
 <template>
-<nav class="bg-white fixed w-full z-20 top-0 start-0 border-b border-gray-200">
-  <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
-    <a href="#" class="flex items-center space-x-3 rtl:space-x-reverse">
-        <img src="https://flowbite.com/docs/images/logo.svg" class="h-8" alt="Flowbite Logo" />
+  <nav
+    class="bg-white fixed w-full z-20 top-0 start-0 border-b border-gray-200"
+  >
+    <div
+      class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4"
+    >
+      <a href="#" class="flex items-center space-x-3 rtl:space-x-reverse">
+        <img
+          src="https://flowbite.com/docs/images/logo.svg"
+          class="h-8"
+          alt="Flowbite Logo"
+        />
         <!-- Updated to a professional deep teal color -->
-        <span class="self-center text-2xl font-semibold text-secondary whitespace-nowrap">Shelfie</span>
-    </a>
-    <button data-collapse-toggle="navbar-dropdown" type="button" class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200">
+        <span
+          class="self-center text-2xl font-semibold text-secondary whitespace-nowrap"
+          >Shelfie</span
+        >
+      </a>
+      <button
+        data-collapse-toggle="navbar-dropdown"
+        type="button"
+        class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200"
+      >
         <span class="sr-only">Open main menu</span>
-        <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
-            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h15M1 7h15M1 13h15"/>
+        <svg
+          class="w-5 h-5"
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 17 14"
+        >
+          <path
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M1 1h15M1 7h15M1 13h15"
+          />
         </svg>
-    </button>
-    <div class="hidden w-full md:block md:w-auto" id="navbar-dropdown">
-      <ul class="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-white">
-        <li>
-            <button id="dropdownNavbarLink" data-dropdown-toggle="dropdownNavbar" class="flex items-center justify-between w-full py-2 px-3 
-            text-gray-700 font-bold rounded hover:text-teal-700 hover:bg-teal-50 md:hover:bg-transparent 
-            md:border-0 md:hover:text-secondary md:p-0 md:w-auto">
-               Browse <svg class="w-2.5 h-2.5 ms-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
-                </svg>
+      </button>
+      <div class="hidden w-full md:block md:w-auto" id="navbar-dropdown">
+        <ul
+          class="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-white"
+        >
+          <li>
+            <button
+              id="dropdownNavbarLink"
+              data-dropdown-toggle="dropdownNavbar"
+              class="flex items-center justify-between w-full py-2 px-3 text-gray-700 font-bold rounded hover:text-teal-700 hover:bg-teal-50 md:hover:bg-transparent md:border-0 md:hover:text-secondary md:p-0 md:w-auto"
+            >
+              Browse
+              <svg
+                class="w-2.5 h-2.5 ms-2.5"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 10 6"
+              >
+                <path
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="m1 1 4 4 4-4"
+                />
+              </svg>
             </button>
-           <!-- Dropdown menu -->
-           <div id="dropdownNavbar" class="z-10 hidden font-normal bg-white divide-y divide-gray-100 rounded-lg shadow w-full max-w-xs">
-                <ul class="py-2 text-sm text-gray-700" aria-labelledby="dropdownLargeButton">
-                    <li>
-                        <a href="#" class="block px-4 py-2 hover:bg-teal-50 hover:text-teal-700">
-                            <div class="flex flex-col">
-                                <span>Categories</span>
-                                <span class="text-xs text-gray-500">Browse different categories</span>
-                            </div>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" class="block px-4 py-2 hover:bg-teal-50 hover:text-teal-700">
-                            <div class="flex flex-col">
-                                <span>Available Institutions</span>
-                                <span class="text-xs text-gray-500">See participating institutions</span>
-                            </div>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" class="block px-4 py-2 hover:bg-teal-50 hover:text-teal-700">
-                            <div class="flex flex-col">
-                                <span>Learn</span>
-                                <span class="text-xs text-gray-500">Access learning resources</span>
-                            </div>
-                        </a>
-                    </li>
-                </ul>
-                <div class="py-1">
-                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-teal-50 hover:text-secondary">Sign out</a>
-                </div>
-           </div>
-        </li>
-        <li>
-          <RouterLink to="/" class="block py-2 px-3 text-gray-700 rounded 
-          hover:bg-teal-50 md:hover:bg-transparent md:border-0 md:hover:text-secondary md:p-0">Pricing</RouterLink>
-        </li>
-        <li>
-          <button @click="$emit('open-signup')" class="block py-2 px-3 text-gray-700 rounded 
-          hover:bg-teal-50 md:hover:bg-transparent md:border-0 md:hover:text-secondary md:p-0">Join</button>
-        </li>
-        <li>
-          <button @click="$emit('open-login')" class="block py-2 px-3 text-gray-700 rounded hover:bg-secondary 
-          md:hover:bg-transparent md:border-0 md:hover:text-secondary md:p-0">Sign In</button>
-        </li>
-      </ul>
+            <!-- Dropdown menu -->
+            <div
+              id="dropdownNavbar"
+              class="z-10 hidden font-normal bg-white divide-y divide-gray-100 rounded-lg shadow w-full max-w-xs"
+            >
+              <ul
+                class="py-2 text-sm text-gray-700"
+                aria-labelledby="dropdownLargeButton"
+              >
+                <li>
+                  <a
+                    href="#"
+                    class="block px-4 py-2 hover:bg-teal-50 hover:text-teal-700"
+                  >
+                    <div class="flex flex-col">
+                      <span>Categories</span>
+                      <span class="text-xs text-gray-500"
+                        >Browse different categories</span
+                      >
+                    </div>
+                  </a>
+                </li>
+                <li>
+                  <RouterLink
+                    to="/institutions"
+                    class="block px-4 py-2 hover:bg-teal-50 hover:text-teal-700"
+                  >
+                    <div class="flex flex-col">
+                      <span>Available Institutions</span>
+                      <span class="text-xs text-gray-500"
+                        >See participating institutions</span
+                      >
+                    </div>
+                  </RouterLink>
+                </li>
+                <li>
+                  <a
+                    href="#"
+                    class="block px-4 py-2 hover:bg-teal-50 hover:text-teal-700"
+                  >
+                    <div class="flex flex-col">
+                      <span>Learn</span>
+                      <span class="text-xs text-gray-500"
+                        >Access learning resources</span
+                      >
+                    </div>
+                  </a>
+                </li>
+              </ul>
+              <div class="py-1">
+                <a
+                  href="#"
+                  class="block px-4 py-2 text-sm text-gray-700 hover:bg-teal-50 hover:text-secondary"
+                  >Sign out</a
+                >
+              </div>
+            </div>
+          </li>
+          <li>
+            <RouterLink
+              to="/"
+              class="block py-2 px-3 text-gray-700 rounded hover:bg-teal-50 md:hover:bg-transparent md:border-0 md:hover:text-secondary md:p-0"
+              >Pricing</RouterLink
+            >
+          </li>
+          <li>
+            <button
+              @click="$emit('open-signup')"
+              class="block py-2 px-3 text-gray-700 rounded hover:bg-teal-50 md:hover:bg-transparent md:border-0 md:hover:text-secondary md:p-0"
+            >
+              Join
+            </button>
+          </li>
+          <li>
+            <button
+              @click="$emit('open-login')"
+              class="block py-2 px-3 text-gray-700 rounded hover:bg-secondary md:hover:bg-transparent md:border-0 md:hover:text-secondary md:p-0"
+            >
+              Sign In
+            </button>
+          </li>
+        </ul>
+      </div>
     </div>
-  </div>
-</nav>
-
-
+  </nav>
 </template>
