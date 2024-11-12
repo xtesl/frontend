@@ -41,7 +41,7 @@ import Card from '../Card.vue';
         <!-- Reason 3 -->
         <div class="bg-white rounded-lg shadow overflow-hidden">
           <img
-            src="/img/student_hired.jpg"
+            src="https://www.teledataict.com/media/2021/11/Tech20Changes20Business.jpeg"
             alt="Affordable & Flexible Work"
             class="w-full h-48 object-cover"
           />

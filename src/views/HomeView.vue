@@ -5,10 +5,12 @@ import WhyUs from '@/components/Home/WhyUs.vue';
 import FAQs from '@/components/Home/FAQs.vue';
 import WhatYouNeedToKnow from '@/components/Home/WhatYouNeedToKnow.vue';
 import Categories from '@/components/Home/Categories.vue';
+import HeroCategories from '@/components/Home/HeroCategories.vue';
 </script>
 
 <template>
 <Hero />
+<HeroCategories />
 <HomeCards />
 <WhyUs />
 <FAQs />
