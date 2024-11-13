@@ -17,7 +17,7 @@
         >
           <div class="flex flex-col items-center lg:items-start">
             <h2
-              class="max-w-lg mb-4 sm:mb-6 font-sans text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-white font-playfair"
+              class="max-w-lg mb-4 sm:mb-6 font-sans text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-white stylish_font"
             >
               Empowering Students,
               <br class="hidden md:block" />

@@ -4,7 +4,7 @@ import HomeCards from '@/components/HomeCards.vue';
 import WhyUs from '@/components/Home/WhyUs.vue';
 import FAQs from '@/components/Home/FAQs.vue';
 import WhatYouNeedToKnow from '@/components/Home/WhatYouNeedToKnow.vue';
-import Categories from '@/components/Home/Categories.vue';
+import PrimaryButton from '@/components/navigators/buttons/PrimaryButton.vue';
 import HeroCategories from '@/components/Home/HeroCategories.vue';
 </script>
 
@@ -15,5 +15,10 @@ import HeroCategories from '@/components/Home/HeroCategories.vue';
 <WhyUs />
 <FAQs />
 <WhatYouNeedToKnow />
-<Categories />
+<div class="flex flex-col space-y-4 items-center justify-center p-4"> 
+    <PrimaryButton variant="outline" size="lg">
+    Join Now
+</PrimaryButton>
+</div>
+
 </template>
