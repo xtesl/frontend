@@ -2,6 +2,7 @@
 import { ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import FAQs from '@/components/Home/FAQs.vue';
+import { RouterLink } from 'vue-router';
 
 const data = {
   "Programming and Tech": {
@@ -119,7 +120,9 @@ onMounted(() => {
             <!-- Services List -->
             <ul class="space-y-1">
               <li v-for="service in subcategory.services" :key="service" class="text-gray-700 text-sm sm:text-base lg:text-lg">
-                • {{ service }}
+                <RouterLink to="#" class="hover:underline">  
+                  • {{ service }}
+                </RouterLink> 
               </li>
             </ul>
           </div>
