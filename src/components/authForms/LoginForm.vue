@@ -1,61 +1,59 @@
 <script setup>
-import { ref, computed } from "vue";
-
+import { ref } from "vue";
+import axios from "axios";
 import * as yup from "yup";
+import { Form, Field, ErrorMessage } from "vee-validate";
+import { useRouter } from "vue-router";
 
-import { Form, ErrorMessage, Field, useField } from "vee-validate";
-
-// Yup validation schema
+const router = useRouter();
 
 const schema = yup.object({
-  email: yup.string().email().required("Email is required"),
-
+  email: yup.string().email("Invalid email format").required("Email is required"),
   password: yup.string().required("Password is required"),
 });
 
 const props = defineProps(["show"]);
+const emit = defineEmits(["close", "switchToSignup", "loginSuccess"]);
 
-const emit = defineEmits(["close"]);
-
-// Close the modal
+const email = ref("");
+const password = ref("");
+const isLoading = ref(false);
+const serverMessage = ref("");
 
 const closeModal = () => {
   emit("close");
 };
 
-// Handle form submission
-
-const handleSubmit = (values) => {
-  console.log(values); // Log the values for debugging
-
-  closeModal(); // Close the modal after submission
-};
-
-// Switch to signup modal
-
 const switchToSignup = () => {
   emit("close");
-
   emit("switchToSignup");
 };
 
-// Social login actions
+const handleSubmit = async (validatedData) => {
+  serverMessage.value = "";
+  isLoading.value = true;
+  
+  // submitted data
+  const email = validatedData.email;
+  const password = validatedData.password;
 
-const loginWithGoogle = () => {
-  console.log("Google login triggered");
+  try {
+    const response = await axios.get("http://localhost:5000/users");
+    const users = response.data;
+    const user = users.find(user => user.email == email);
+    if(user){
+      emit("loginSuccess");
+      emit("close");
+      router.push('/jobs');
+    }
+    serverMessage.value = response.data.message || "Login successful!";
+  } catch (error) {
+    console.error("Error during login:", error);
+    serverMessage.value = error.response?.data?.message || "An error occurred during login.";
+  } finally {
+    isLoading.value = false;
+  }
 };
-
-// Set up fields and error messages
-
-const { value: email, errorMessage: emailError } = useField("email");
-
-const { value: password, errorMessage: passwordError } = useField("password");
-
-// Track invalid states for conditional styling
-
-const isEmailInvalid = computed(() => !!emailError.value);
-
-const isPasswordInvalid = computed(() => !!passwordError.value);
 </script>
 
 <template>
@@ -63,70 +61,81 @@ const isPasswordInvalid = computed(() => !!passwordError.value);
     v-if="show"
     class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
   >
-    <!-- Modal container with max-height and scrollable overflow -->
     <div
-      @click.self="closeModal"
-      class="w-full max-w-md bg-white rounded-lg shadow-lg p-6 space-y-6 relative overflow-y-auto"
-      style="max-height: 80vh"
+      class="relative w-full max-w-md bg-white rounded-lg shadow-lg p-6 space-y-6 max-h-[90vh] overflow-y-auto"
     >
+      <!-- Loading Overlay -->
+      <div 
+        v-if="isLoading" 
+        class="absolute inset-0 bg-white bg-opacity-70 z-[999] flex items-center justify-center rounded-lg"
+      >
+        <div class="spinner-border"></div>
+      </div>
+
+      <!-- Modal Content -->
       <RouterLink
         to="/"
         class="flex items-center justify-center mb-6 text-2xl font-semibold text-gray-900"
       >
         <img
           class="w-8 h-8 mr-2"
-          src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/logo.svg"
+          v-lazy="'https://flowbite.s3.amazonaws.com/blocks/marketing-ui/logo.svg'"
           alt="logo"
         />
         Shelfie
       </RouterLink>
 
       <h1 class="text-xl font-bold text-gray-900 text-center">
-        Sign in to your account
+        Login to your account
       </h1>
+
+      <!-- Server Response Message -->
+      <div v-if="serverMessage" class="text-center text-gray-600 font-semibold">
+        {{ serverMessage }}
+      </div>
 
       <!-- Social Login Buttons -->
       <div class="mt-4 space-y-2">
         <button
-          @click="loginWithGoogle"
           class="flex items-center justify-center w-full p-2 border border-gray-300 rounded-lg hover:bg-gray-100"
+          :disabled="isLoading"
         >
           <img
-            src="/img/icons/common/google.svg"
+            v-lazy="'/img/icons/common/google.svg'"
             alt="Google"
             class="w-5 h-5 mr-2"
           />
-          Sign in with Google
+          Login with Google
         </button>
       </div>
 
+      <!-- Login Form -->
       <Form
         class="space-y-4"
         :validation-schema="schema"
         @submit="handleSubmit"
-        :validate-on-blur="true"
-        :validate-on-change="true"
+        
       >
         <!-- Email Field -->
         <div>
           <label
             for="email"
             class="block mb-2 text-sm font-medium text-gray-900"
-            >Your email</label
           >
+            Your email
+          </label>
           <Field
+           
             type="email"
             id="email"
             name="email"
+            class="w-full p-2.5 border border-gray-300 rounded-lg bg-gray-50 text-gray-900 focus:ring-secondary focus:border-secondary"
             placeholder="name@company.com"
-            required
-            :class="{
-              'w-full p-2.5 border rounded-lg bg-gray-50 text-gray-900 focus:ring-secondary focus:border-secondary': true,
-              'border-red-500': isEmailInvalid,
-            }"
+            :disabled="isLoading"
+            
           />
           <ErrorMessage name="email" v-slot="{ message }">
-            <span class="flex items-center text-red-500 font-semibold">
+            <span class="flex items-center text-red-500 font-semibold mt-1">
               <i class="pi pi-exclamation-circle mr-2 text-lg sm:text-base"></i>
               {{ message }}
             </span>
@@ -138,68 +147,99 @@ const isPasswordInvalid = computed(() => !!passwordError.value);
           <label
             for="password"
             class="block mb-2 text-sm font-medium text-gray-900"
-            >Password</label
           >
+            Password
+          </label>
           <Field
             type="password"
-            name="password"
             id="password"
-            placeholder="•••••••• "
-            required
-            :class="{
-              'w-full p-2.5 border rounded-lg bg-gray-50 text-gray-900 focus:ring-secondary focus:border-secondary': true,
-              'border-red-500': isPasswordInvalid,
-            }"
+            name="password"
+            class="w-full p-2.5 border border-gray-300 rounded-lg bg-gray-50 text-gray-900 focus:ring-secondary focus:border-secondary"
+            placeholder="••••••••"
+            :disabled="isLoading"
+            
           />
           <ErrorMessage name="password" v-slot="{ message }">
-            <span class="flex items-center text-red-500 font-semibold">
+            <span class="flex items-center text-red-500 font-semibold mt-1">
               <i class="pi pi-exclamation-circle mr-2 text-lg sm:text-base"></i>
               {{ message }}
             </span>
           </ErrorMessage>
         </div>
 
-        <!-- Remember Me and Forgot Password -->
-        <div class="flex items-center justify-between">
-          <label class="flex items-center">
-            <input
-              type="checkbox"
-              class="w-4 h-4 text-secondary border-gray-300 rounded focus:ring-secondary"
-            />
-            <span class="ml-2 text-sm text-gray-500">Remember me</span>
-          </label>
-          <a href="#" class="text-sm font-medium text-secondary hover:underline"
-            >Forgot password?</a
+        <!-- Forgot Password Link -->
+        <div class="flex justify-end">
+          <a 
+            href="#" 
+            class="text-sm text-secondary hover:underline"
+            :disabled="isLoading"
           >
+            Forgot password?
+          </a>
         </div>
 
-        <!-- Sign In Button -->
+        <!-- Login Button -->
         <button
           type="submit"
-          class="w-full px-5 py-2.5 text-sm font-medium text-white bg-secondary rounded-lg hover:bg-blue-900 focus:ring-4 focus:outline-none focus:ring-secondary"
+          class="w-full px-5 py-2.5 text-sm font-medium text-white bg-secondary rounded-lg hover:bg-blue-900 focus:ring-4 focus:outline-none focus:ring-secondary flex items-center justify-center"
+          :disabled="isLoading"
         >
-          Sign in
+          <span v-if="!isLoading">Login</span>
+          <span v-else>Processing...</span>
         </button>
-
-        <!-- Signup Link -->
-        <p class="text-sm text-center text-gray-500">
-          Don’t have an account yet?
-          <button
-            @click="switchToSignup"
-            class="font-medium text-secondary hover:underline"
-          >
-            Sign up
-          </button>
-        </p>
       </Form>
+
+      <!-- Signup Link -->
+      <p class="text-sm text-center text-gray-500 mt-4">
+        Don't have an account?
+        <button
+          @click="switchToSignup"
+          class="font-medium text-secondary hover:underline"
+          :disabled="isLoading"
+        >
+          Sign up here
+        </button>
+      </p>
 
       <!-- Close Button -->
       <button
         @click="closeModal"
         class="absolute top-4 right-4 text-gray-500 hover:text-gray-800"
+        :disabled="isLoading"
       >
         ✕
       </button>
     </div>
   </div>
 </template>
+
+<style scoped>
+/* Spinner Animation */
+.spinner-border {
+  border-top-color: transparent;
+  border-left-color: transparent;
+  border-right-color: transparent;
+  border-bottom-color: #3498db;
+  border-width: 2px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Optional: Focus and Hover States */
+input:focus, 
+button:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.3);
+}
+
+button:hover:not(:disabled) {
+  opacity: 0.9;
+}
+</style>

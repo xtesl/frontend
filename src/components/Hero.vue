@@ -5,7 +5,7 @@
   <section>
     <div class="relative h-screen md:h-auto">
       <img
-        src="https://images.pexels.com/photos/3747463/pexels-photo-3747463.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260"
+        v-lazy="'https://images.pexels.com/photos/3747463/pexels-photo-3747463.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260'"
         class="absolute inset-0 object-cover w-full h-full"
         alt="Background image"
       />

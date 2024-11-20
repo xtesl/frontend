@@ -9,13 +9,25 @@ import { ref } from 'vue';
 // Modal visibility control
 const showLoginModal = ref(false);
 const showSignUpModal = ref(false);
+
+// Join and Sign in buttons visiblity control
+const isAuthenticated = ref(false);
+
 </script>
 
 <template>
-<Navbar @open-login="showLoginModal = true" @open-signup="showSignUpModal = true" />
-<LoginForm :show="showLoginModal" @close="showLoginModal = false" 
+<Navbar @open-login="showLoginModal = true" 
+@open-signup="showSignUpModal = true"  
+:isAuthenticated="isAuthenticated"
+@signout="isAuthenticated = false"  />
+
+<LoginForm :show="showLoginModal" 
+@close="showLoginModal = false" 
+@loginSuccess="isAuthenticated = true"
 @switchToSignup="showLoginModal = false; showSignUpModal = true" />
-<SignupForm  :show="showSignUpModal" @close="showSignUpModal = false" 
+
+<SignupForm  :show="showSignUpModal" 
+@close="showSignUpModal = false" 
 @switchToLogin="showLoginModal = true; showSignUpModal = false" />
 <RouterView />
 <Footer />

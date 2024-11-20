@@ -97,7 +97,7 @@ onMounted(() => {
     <div v-if="category" class="space-y-8">
       <!-- Category Header with Image -->
       <div class="relative h-48 sm:h-64 md:h-80 lg:h-96 rounded-lg overflow-hidden mb-8 shadow-lg">
-        <img :src="category.image" :alt="route.params.category" class="w-full h-full object-cover">
+        <img v-lazy="category.image" :alt="route.params.category" class="w-full h-full object-cover">
         <h1 class="absolute inset-0 bg-black/60 text-white text-2xl sm:text-3xl lg:text-4xl font-bold flex items-center justify-center p-4
         stylish_font">
           {{ route.params.category }}
@@ -112,7 +112,7 @@ onMounted(() => {
         >
           <!-- Subcategory Image -->
           <div class="relative h-40 sm:h-48 lg:h-56">
-            <img :src="subcategory.image" :alt="subcategory.name" class="w-full h-full object-cover rounded-t-lg">
+            <img v-lazy="subcategory.image" :alt="subcategory.name" class="w-full h-full object-cover rounded-t-lg">
           </div>
           <div class="p-4">
             <!-- Subcategory Title -->

@@ -3,123 +3,130 @@
 
     <!-- Header -->
     <header class="mb-6 sm:mb-8 flex flex-col stylish_font">
-    <!-- Title and Description -->
-    <div class="flex flex-col sm:flex-row sm:justify-between items-start sm:items-center">
-      <div>
-        <h1 class="text-2xl sm:text-3xl font-bold text-gray-800">Freelance Projects</h1>
-        <p class="text-gray-600">{{ totalJobs }} available opportunities</p>
-        <!-- Sort By Button -->
-        <div class="mt-4 relative">
-          <button
-            @click="toggleSortDropdown"
-            class="flex items-center px-4 py-2 text-sm font-medium bg-gray-100 text-gray-800 rounded-lg shadow hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-300 transition"
-          >
-            <i class="pi pi-sort-alt text-gray-600 mr-2"></i> Sort By
-            <i class="pi pi-chevron-down text-gray-600 ml-2"></i>
-          </button>
-          <!-- Sort Dropdown -->
-          <div
-            v-if="showSortDropdown"
-            class="absolute mt-2 bg-white shadow-lg rounded-lg p-4 w-64 sm:w-72 z-50 border border-gray-200"
-          >
-            <button
-              v-for="option in sortOptions"
-              :key="option"
-              @click="applySort(option)"
-              class="w-full flex items-center justify-between px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-md"
-            >
-              {{ option }}
-              <i
-                v-if="selectedSort === option"
-                class="pi pi-check text-green-500 ml-2"
-              ></i>
-            </button>
-          </div>
-        </div>
-      </div>
-      <!-- Filter Buttons -->
-      <div class="mt-4 sm:mt-0 flex gap-3 sm:ml-auto relative">
-        <!-- Budget Button -->
-        <div class="relative">
-          <button
-            @click="toggleBudgetDropdown"
-            class="flex items-center px-4 py-2 text-sm font-medium bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
-          >
-            <i class="pi pi-filter text-white mr-2"></i> Budget
-            <i class="pi pi-chevron-down text-white ml-2"></i>
-          </button>
-          <!-- Budget Dropdown -->
-          <div
-            v-if="showBudgetDropdown"
-            class="absolute top-full mt-2 right-0 bg-white shadow-lg rounded-lg p-4 w-full sm:w-80 max-w-xs z-50 border border-gray-200"
-          >
-            <div class="mb-4">
-              <label for="min-budget" class="block text-sm font-medium text-gray-600 mb-1">Min Budget</label>
-              <input
-                v-model="minBudget"
-                type="number"
-                id="min-budget"
-                class="w-full px-3 py-2 border rounded-md focus:ring-2 focus:ring-blue-400 focus:outline-none"
-                placeholder="e.g., 50"
-              />
-            </div>
-            <div class="mb-4">
-              <label for="max-budget" class="block text-sm font-medium text-gray-600 mb-1">Max Budget</label>
-              <input
-                v-model="maxBudget"
-                type="number"
-                id="max-budget"
-                class="w-full px-3 py-2 border rounded-md focus:ring-2 focus:ring-blue-400 focus:outline-none"
-                placeholder="e.g., 500"
-              />
-            </div>
-            <button
-              @click="applyBudgetFilter"
-              class="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 
-              focus:ring-blue-400 transition"
-            >
-              Apply
-            </button>
-          </div>
-        </div>
-        <!-- Delivery Time Button -->
-        <div class="relative">
-          <button
-            @click="toggleDeliveryDropdown"
-            class="flex items-center px-4 py-2 text-sm font-medium bg-green-600 text-white rounded-lg shadow hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-400 transition"
-          >
-            <i class="pi pi-clock text-white mr-2"></i> Delivery Time
-            <i class="pi pi-chevron-down text-white ml-2"></i>
-          </button>
-          <!-- Delivery Time Dropdown -->
-          <div
-            v-if="showDeliveryDropdown"
-            class="absolute top-full mt-2 right-0 bg-white shadow-lg rounded-lg p-4 w-full sm:w-80 max-w-xs z-50 border border-gray-200"
-          >
-            <button
-              v-for="option in deliveryOptions"
-              :key="option"
-              @click="selectDeliveryOption(option)"
-              class="w-full flex items-center justify-between px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-md"
-            >
-              {{ option }}
-              <i
-                v-if="selectedDeliveryOption === option"
-                class="pi pi-check text-green-500 ml-2"
-              ></i>
-            </button>
-            <button
-              @click="applyDeliveryFilter"
-              class="w-full mt-4 bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-400 transition"
-            >
-              Apply
-            </button>
-          </div>
-        </div>
+  <!-- Title and Description -->
+  <div class="flex flex-col sm:flex-row sm:justify-between items-start sm:items-center w-full">
+    <div>
+      <h1 class="text-2xl sm:text-3xl font-bold text-gray-800">Freelance Projects</h1>
+      <p class="text-gray-600">{{ totalJobs }} available opportunities</p>
+    </div>
+  </div>
+
+  <!-- Search Bar and Filter Section -->
+  <div class="mt-4 sm:mt-6 flex flex-wrap items-center gap-3">
+    <!-- Search Bar -->
+    <div class="flex-grow relative">
+      <div class="flex items-center bg-white border border-gray-300 px-4 py-2 rounded-lg focus-within:ring-2 focus-within:ring-blue-500">
+        <i class="pi pi-search text-gray-400 mr-3"></i>
+        <input
+          type="text"
+          v-model="searchQuery"
+          class="w-full bg-transparent text-sm text-gray-700 border-none focus:outline-none"
+          placeholder="Search for projects or freelancers..."
+        />
       </div>
     </div>
-    <hr class="mt-2" />
-  </header>
+
+    <!-- Sort By Button -->
+    <div class="relative">
+      <button
+        @click="toggleSortDropdown"
+        class="flex items-center px-4 py-2 text-sm font-medium bg-gray-100 text-gray-800 rounded-lg shadow hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-300 transition"
+      >
+        <i class="pi pi-sort-alt text-gray-600 mr-2"></i> Sort By
+        <i class="pi pi-chevron-down text-gray-600 ml-2"></i>
+      </button>
+      <div
+        v-if="showSortDropdown"
+        class="absolute mt-2 bg-white shadow-lg rounded-lg p-4 w-auto max-w-sm z-50 border border-gray-200 left-0 sm:right-0"
+      >
+        <button
+          v-for="option in sortOptions"
+          :key="option"
+          @click="applySort(option)"
+          class="w-full flex items-center justify-between px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-md"
+        >
+          {{ option }}
+          <i v-if="selectedSort === option" class="pi pi-check text-green-500 ml-2"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Budget Button -->
+    <div class="relative">
+      <button
+        @click="toggleBudgetDropdown"
+        class="flex items-center px-4 py-2 text-sm font-medium bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
+      >
+        <i class="pi pi-filter text-white mr-2"></i> Budget
+        <i class="pi pi-chevron-down text-white ml-2"></i>
+      </button>
+      <div
+        v-if="showBudgetDropdown"
+        class="absolute mt-2 bg-white shadow-lg rounded-lg p-4 w-auto max-w-sm z-50 border border-gray-200 left-0 sm:right-0"
+      >
+        <div class="mb-4">
+          <label for="min-budget" class="block text-sm font-medium text-gray-600 mb-1">Min Budget</label>
+          <input
+            v-model="minBudget"
+            type="number"
+            id="min-budget"
+            class="w-full px-3 py-2 border rounded-md focus:ring-2 focus:ring-blue-400 focus:outline-none"
+            placeholder="e.g., 50"
+          />
+        </div>
+        <div class="mb-4">
+          <label for="max-budget" class="block text-sm font-medium text-gray-600 mb-1">Max Budget</label>
+          <input
+            v-model="maxBudget"
+            type="number"
+            id="max-budget"
+            class="w-full px-3 py-2 border rounded-md focus:ring-2 focus:ring-blue-400 focus:outline-none"
+            placeholder="e.g., 500"
+          />
+        </div>
+        <button
+          @click="applyBudgetFilter"
+          class="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
+        >
+          Apply
+        </button>
+      </div>
+    </div>
+
+    <!-- Delivery Time Button -->
+    <div class="relative">
+      <button
+        @click="toggleDeliveryDropdown"
+        class="flex items-center px-4 py-2 text-sm font-medium bg-green-600 text-white rounded-lg shadow hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-400 transition"
+      >
+        <i class="pi pi-clock text-white mr-2"></i> Delivery Time
+        <i class="pi pi-chevron-down text-white ml-2"></i>
+      </button>
+      <div
+        v-if="showDeliveryDropdown"
+        class="absolute mt-2 bg-white shadow-lg rounded-lg p-4 w-auto max-w-sm z-50 border border-gray-200 left-0 sm:right-0"
+      >
+        <button
+          v-for="option in deliveryOptions"
+          :key="option"
+          @click="selectDeliveryOption(option)"
+          class="w-full flex items-center justify-between px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-md"
+        >
+          {{ option }}
+          <i v-if="selectedDeliveryOption === option" class="pi pi-check text-green-500 ml-2"></i>
+        </button>
+        <button
+          @click="applyDeliveryFilter"
+          class="w-full mt-4 bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-400 transition"
+        >
+          Apply
+        </button>
+      </div>
+    </div>
+  </div>
+  <hr class="mt-6" />
+</header>
+
 
 
     <!-- Project Cards Container -->
@@ -309,6 +316,7 @@ const loading = ref(false)
 const hasMore = ref(true)
 const jobContainer = ref(null)
 const totalJobs = ref(0)
+const searchQuery = ref("");
 
 const showBudgetDropdown = ref(false);
 const showDeliveryDropdown = ref(false);
