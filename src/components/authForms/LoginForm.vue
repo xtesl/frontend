@@ -21,6 +21,7 @@ const isLoading = ref(false);
 const serverMessage = ref("");
 
 const closeModal = () => {
+  serverMessage.value = ''
   emit("close");
 };
 
@@ -90,7 +91,7 @@ const handleSubmit = async (validatedData) => {
       </h1>
 
       <!-- Server Response Message -->
-      <div v-if="serverMessage" class="text-center text-gray-600 font-semibold">
+      <div v-if="serverMessage" class="text-center text-red-600 font-semibold">
         {{ serverMessage }}
       </div>
 

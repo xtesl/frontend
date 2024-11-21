@@ -1,167 +1,245 @@
-<script setup>
-import { RouterLink, useRoute } from "vue-router";
-import { ref } from "vue";
-import { useRouter } from "vue-router";
-
-const router = useRouter();
-
-// Modal visibility control
-const showLoginModal = ref(false);
-const showSignUpModal = ref(false);
-
-const props = defineProps(["isAuthenticated"]);
-const emits = defineEmits(["signout"]);
-
-const signout = () => {
-  router.push("/");
-  emits("signout");
-};
-</script>
-
 <template>
   <header>
-    <nav class="bg-white border-gray-200 fixed w-full z-20 top-0 start-0 
-    border-b px-4 lg:px-6 py-2.5 stylish_font">
-      <div
-        class="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl"
-      >
-        <a href="/" class="flex items-center">
-          <img
-            src="https://flowbite.com/docs/images/logo.svg"
-            class="mr-3 h-6 sm:h-9"
-            alt="Flowbite Logo"
-          />
-          <span
-            class="self-center text-xl font-semibold whitespace-nowrap"
-            >Flowbite</span
-          >
+    <nav :class="[
+      'fixed w-full z-20 top-0 start-0 transition-all duration-300',
+      isScrolled ? 'bg-white shadow-lg' : 'bg-white'
+    ]">
+      <div class="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl px-4 lg:px-6 py-4">
+        <!-- Logo -->
+        <a href="/" class="flex items-center space-x-3" @click="closeMobileMenu">
+          <img src="https://flowbite.com/docs/images/logo.svg" class="h-8 w-auto" alt="Flowbite Logo" />
+          <span class="text-xl font-bold bg-gradient-to-r from-teal-500 to-blue-500 text-transparent bg-clip-text">
+            Flowbite
+          </span>
         </a>
+
+        <!-- Desktop Buttons -->
         <div class="flex items-center lg:order-2">
-          <button
-          v-if="!isAuthenticated"
-            @click="emits('open-login')"
-            class="text-gray-900 hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg 
-            text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 hidden lg:block focus:outline-none "
-            >Log in</button
-          >
-          <button
-           v-if="!isAuthenticated"
-            @click="emits('open-signup')"
-            class="text-gray-900 border-2 border-gray-900 bg-primary-900 hover:bg-primary-800 focus:ring-4 
-            ring-primary-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 
-             focus:outline-none "
-            >Get started</button
-          >
-          <button
-           v-if="isAuthenticated"
-            @click="signout"
-            class="text-gray-900 border-2 border-gray-900 bg-primary-900 hover:bg-primary-800 focus:ring-4 
-            ring-primary-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 
-             focus:outline-none "
-            >Logout</button
-          >
-          <button
-            data-collapse-toggle="mobile-menu-2"
-            type="button"
+          <template v-if="!isAuthenticated">
+            <button @click="handleLoginClick"
+              class="text-gray-700 hover:text-gray-900 transition-colors font-medium rounded-lg text-sm 
+                     px-4 lg:px-5 py-2 lg:py-2.5 mr-2 hidden lg:block hover:bg-gray-50">
+              Log in
+            </button>
+            <button @click="handleSignupClick"
+              class="hidden lg:block px-4 py-2 bg-gradient-to-r from-teal-500 to-blue-500 text-white rounded-lg 
+                     hover:from-teal-600 hover:to-blue-600 transition-all transform hover:scale-105 
+                     active:scale-95 shadow-md hover:shadow-lg font-medium text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2">
+              Get started
+            </button>
+          </template>
+          <button v-else @click="handleSignout"
+            class="hidden lg:block px-4 py-2 border-2 border-gray-300 rounded-lg hover:border-gray-400 
+                   transition-colors text-gray-700 font-medium text-sm lg:px-5 py-2 lg:py-2.5 mr-2 hover:bg-gray-50">
+            Logout
+          </button>
+
+          <!-- Mobile Menu Button -->
+          <button @click="toggleMobileMenu" type="button"
             class="inline-flex items-center p-2 ml-1 text-sm text-gray-500 rounded-lg lg:hidden 
-            hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200"
-            aria-controls="mobile-menu-2"
-            aria-expanded="false"
-          >
-            <span class="sr-only">Open main menu</span>
-            <svg
-              class="w-6 h-6"
-              fill="currentColor"
-              viewBox="0 0 20 20"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                fill-rule="evenodd"
-                d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"
-                clip-rule="evenodd"
-              ></path>
+                   hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200">
+            <span class="sr-only">Toggle mobile menu</span>
+            <svg v-if="!isMobileMenuOpen" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
             </svg>
-            <svg
-              class="hidden w-6 h-6"
-              fill="currentColor"
-              viewBox="0 0 20 20"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                fill-rule="evenodd"
-                d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                clip-rule="evenodd"
-              ></path>
+            <svg v-else class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
             </svg>
           </button>
         </div>
-        <div
-          class="hidden justify-between items-center w-full lg:flex lg:w-auto lg:order-1"
-          id="mobile-menu-2"
-        >
-          <ul
-            class="flex flex-col mt-4 font-medium lg:flex-row lg:space-x-8 lg:mt-0"
-          >
+
+        <!-- Desktop Menu -->
+        <div class="hidden lg:flex lg:w-auto lg:order-1">
+          <ul class="flex flex-col mt-4 font-medium lg:flex-row lg:space-x-8 lg:mt-0">
             <li>
-              <a
-                href="#"
-                class="block py-2 pr-4 pl-3 text-white rounded bg-primary-700 
-                lg:bg-transparent lg:text-primary-700 lg:p-0"
-                aria-current="page"
-                >Home</a
-              >
+              <a href="#" 
+                class="nav-link text-gray-700 hover:text-gray-900"
+                @click="closeMobileMenu">
+                Home
+              </a>
             </li>
             <li>
-              <button
-                @click="emits('open-login')"
-                class="block lg:hidden py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 
-                lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0"
-                >Login</button
-              >
+              <RouterLink to="/jobs" 
+                class="nav-link text-gray-700 hover:text-gray-900"
+                @click="closeMobileMenu">
+                Marketplace
+              </RouterLink>
             </li>
             <li>
-              <RouterLink
-                to="/jobs"
-                class="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 
-                
-                lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0 
-                "
-                >Marketplace</RouterLink
-              >
+              <RouterLink to="/institutions" 
+                class="nav-link text-gray-700 hover:text-gray-900"
+                @click="closeMobileMenu">
+                Institutions
+              </RouterLink>
             </li>
             <li>
-              <RouterLink
-                to="/institutions"
-                class="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent 
-                lg:border-0 lg:hover:text-primary-700 lg:p-0"
-                >Institutions</RouterLink
-              >
+              <a href="#" 
+                class="nav-link text-gray-700 hover:text-gray-900"
+                @click="closeMobileMenu">
+                Team
+              </a>
             </li>
             <li>
-              <a
-                href="#"
-                class="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700"
-                >Team</a
-              >
+              <a href="#" 
+                class="nav-link text-gray-700 hover:text-gray-900"
+                @click="closeMobileMenu">
+                Contact
+              </a>
+            </li>
+            <li v-if="isAuthenticated">
+              <RouterLink to="#" 
+                class="nav-link text-gray-700 hover:text-gray-900"
+                @click="closeMobileMenu">
+                Account
+              </RouterLink>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div v-show="isMobileMenuOpen"
+          class="fixed inset-x-0 top-[65px] lg:hidden bg-white shadow-lg border-t border-gray-100">
+          <ul class="flex flex-col px-4 py-6 font-medium space-y-4">
+            <li>
+              <a href="#" 
+                class="block text-gray-700 hover:text-gray-900 transition-colors py-2"
+                @click="closeMobileMenu">
+                Home
+              </a>
             </li>
             <li>
-              <a
-                href="#"
-                class="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700"
-                >Contact</a
-              >
+              <RouterLink to="/jobs" 
+                class="block text-gray-700 hover:text-gray-900 transition-colors py-2"
+                @click="closeMobileMenu">
+                Marketplace
+              </RouterLink>
             </li>
             <li>
-              <RouterLink
-                v-if="isAuthenticated"
-                to="#"
-                class="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700"
-                >Account</RouterLink
-              >
+              <RouterLink to="/institutions" 
+                class="block text-gray-700 hover:text-gray-900 transition-colors py-2"
+                @click="closeMobileMenu">
+                Institutions
+              </RouterLink>
             </li>
+            <li>
+              <a href="#" 
+                class="block text-gray-700 hover:text-gray-900 transition-colors py-2"
+                @click="closeMobileMenu">
+                Team
+              </a>
+            </li>
+            <li>
+              <a href="#" 
+                class="block text-gray-700 hover:text-gray-900 transition-colors py-2"
+                @click="closeMobileMenu">
+                Contact
+              </a>
+            </li>
+            <li v-if="isAuthenticated">
+              <RouterLink to="#" 
+                class="block text-gray-700 hover:text-gray-900 transition-colors py-2"
+                @click="closeMobileMenu">
+                Account
+              </RouterLink>
+            </li>
+            <!-- Mobile Auth Buttons -->
+            <div class="pt-4 border-t border-gray-200" v-if="!isAuthenticated">
+              <button @click="handleLoginClick"
+                class="w-full mb-2 px-4 py-2 text-gray-700 hover:text-gray-900 transition-colors rounded-lg hover:bg-gray-50">
+                Log in
+              </button>
+              <button @click="handleSignupClick"
+                class="w-full px-4 py-2 bg-gradient-to-r from-teal-500 to-blue-500 text-white rounded-lg 
+                       hover:from-teal-600 hover:to-blue-600 transition-colors">
+                Get started
+              </button>
+            </div>
+            <button v-else @click="handleSignout"
+              class="w-full px-4 py-2 border-2 border-gray-300 rounded-lg hover:border-gray-400 
+                     transition-colors text-gray-700 hover:bg-gray-50">
+              Logout
+            </button>
           </ul>
         </div>
       </div>
     </nav>
   </header>
 </template>
+
+<script setup>
+import { ref, onMounted, onUnmounted } from 'vue'
+import { RouterLink, useRouter } from 'vue-router'
+
+const props = defineProps({
+  isAuthenticated: {
+    type: Boolean,
+    default: false
+  }
+})
+
+const emit = defineEmits(['open-login', 'open-signup'])
+const router = useRouter()
+
+const isScrolled = ref(false)
+const isMobileMenuOpen = ref(false)
+
+// Close mobile menu
+const closeMobileMenu = () => {
+  isMobileMenuOpen.value = false
+}
+
+// Toggle mobile menu
+const toggleMobileMenu = () => {
+  isMobileMenuOpen.value = !isMobileMenuOpen.value
+}
+
+// Handle auth actions with menu closing
+const handleLoginClick = () => {
+  closeMobileMenu()
+  emit('open-login')
+}
+
+const handleSignupClick = () => {
+  closeMobileMenu()
+  emit('open-signup')
+}
+
+const handleSignout = () => {
+  closeMobileMenu()
+  // Implement your signout logic here
+  console.log('Signing out...')
+}
+
+// Scroll handling
+const handleScroll = () => {
+  isScrolled.value = window.scrollY > 20
+}
+
+onMounted(() => {
+  window.addEventListener('scroll', handleScroll)
+  
+  // Close mobile menu on route change
+  router.beforeEach((to, from, next) => {
+    closeMobileMenu()
+    next()
+  })
+})
+
+onUnmounted(() => {
+  window.removeEventListener('scroll', handleScroll)
+})
+</script>
+
+<style scoped>
+.nav-link {
+  @apply relative transition-colors py-2;
+}
+
+.nav-link::after {
+  @apply absolute bottom-0 left-0 h-0.5 w-0 bg-teal-500 transition-all duration-300 content-[''];
+}
+
+.nav-link:hover::after {
+  @apply w-full;
+}
+</style>
