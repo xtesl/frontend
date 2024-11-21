@@ -28,7 +28,7 @@ answer: "Shelfie charges a small commission on completed projects, both from fre
 <FAQs :faqs="faqs"/>
 <WhatYouNeedToKnow />
 <div class="flex flex-col space-y-4 items-center justify-center p-4"> 
-    <PrimaryButton variant="outline" size="lg">
+    <PrimaryButton variant="primary" size="lg">
     Join Now
 </PrimaryButton>
 </div>

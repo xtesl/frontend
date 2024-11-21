@@ -1,27 +1,27 @@
 <template>
-    <section class="py-16 bg-white">
-      <div class="container-xl mx-auto px-4 sm:px-6">
-        <!-- Gradient Card with Adjusted Width and Responsive Design -->
-        <div class="max-w-full sm:max-w-md lg:max-w-4xl mx-auto bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 rounded-lg shadow-lg p-6 sm:p-8">
-          <!-- Heading -->
-          <h2 class="text-2xl sm:text-3xl font-bold text-white mb-4 leading-tight">
-            What You Need to Know About Shelfie
-          </h2>
-          <!-- Description -->
-          <p class="text-base sm:text-lg text-white mb-6 leading-relaxed">
-            Shelfie is a unique platform that connects talented students with employers looking for fresh skills and innovative solutions. 
-            Whether you're a student seeking freelance opportunities or an employer searching for the right talent, Shelfie is the place for you.
-          </p>
-          <!-- Learn More Link -->
-          <RouterLink
-            to="/about"
-            class="inline-block bg-white text-primary font-semibold rounded-lg px-6 py-3 hover:bg-gray-200 transition duration-300"
-          >
-            Learn More
-          </RouterLink>
-        </div>
-      </div>
-    </section>
+   <section class="py-16 bg-white">
+  <div class="container-xl mx-auto px-4 sm:px-6">
+    <!-- Gradient Card with Adjusted Width and Responsive Design -->
+    <div class="max-w-full sm:max-w-md lg:max-w-4xl mx-auto bg-gradient-to-r from-teal-500 via-blue-500 to-teal-600 rounded-lg shadow-lg p-6 sm:p-8">
+      <!-- Heading -->
+      <h2 class="text-2xl sm:text-3xl font-bold text-white mb-4 leading-tight">
+        What You Need to Know About Shelfie
+      </h2>
+      <!-- Description -->
+      <p class="text-base sm:text-lg text-white mb-6 leading-relaxed">
+        Shelfie is a unique platform that connects talented students with employers looking for fresh skills and innovative solutions.
+        Whether you're a student seeking freelance opportunities or an employer searching for the right talent, Shelfie is the place for you.
+      </p>
+      <!-- Learn More Link -->
+      <RouterLink
+        to="/about"
+        class="inline-block bg-white text-teal-600 font-semibold rounded-lg px-6 py-3 hover:bg-gray-100 transition duration-300"
+      >
+        Learn More
+      </RouterLink>
+    </div>
+  </div>
+</section>
   </template>
   
   <script setup>

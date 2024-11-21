@@ -48,7 +48,7 @@
   
   // Style variations
   const variantClasses = {
-    primary: 'bg-gray-900 hover:bg-black text-white focus:ring-gray-500',
+    primary: 'border-teal-500 border-2 text-teal-500 focus:border-teal-500',
     secondary: 'bg-gray-200 hover:bg-gray-300 text-gray-900 focus:ring-gray-400',
     outline: 'border-2 border-gray-900 hover:bg-gray-900 hover:text-white text-gray-900 focus:ring-gray-500',
     ghost: 'hover:bg-gray-100 text-gray-900 focus:ring-gray-400'

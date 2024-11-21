@@ -53,19 +53,19 @@ const handleSubmit = async (values) => {
 </script>
 
 <template>
-  <div
+ <div
     v-if="show"
-    class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
+    class="fixed inset-0 z-50 flex items-center justify-center bg-gradient-to-br from-teal-100/50 to-teal-300/50"
   >
     <div
-      class="relative w-full max-w-md bg-white rounded-lg shadow-lg p-6 space-y-6 max-h-[90vh] overflow-y-auto"
+      class="relative w-full max-w-md bg-white rounded-2xl shadow-2xl p-8 space-y-6 max-h-[90vh] overflow-y-auto border-t-4 border-teal-500"
     >
       <!-- Loading Overlay -->
       <div 
         v-if="isLoading" 
-        class="absolute inset-0 bg-white bg-opacity-70 z-[999] flex items-center justify-center rounded-lg"
+        class="absolute inset-0 bg-white bg-opacity-70 z-[999] flex items-center justify-center rounded-2xl"
       >
-        <div class="spinner-border"></div>
+        <div class="spinner-border text-teal-500"></div>
       </div>
 
       <!-- Modal Content -->
@@ -74,35 +74,49 @@ const handleSubmit = async (values) => {
         class="flex items-center justify-center mb-6 text-2xl font-semibold text-gray-900"
       >
         <img
-          class="w-8 h-8 mr-2"
+          class="w-10 h-10 mr-2 bg-gradient-to-br from-teal-500 to-blue-500 rounded-full p-2"
           v-lazy="'https://flowbite.s3.amazonaws.com/blocks/marketing-ui/logo.svg'"
           alt="logo"
         />
         Shelfie
       </RouterLink>
 
-      <h1 class="text-xl font-bold text-gray-900 text-center">
+      <h1 class="text-2xl font-bold text-gray-900 text-center mb-4">
         Create an account
       </h1>
 
       <!-- Server Response Message -->
-      <div v-if="serverMessage" class="text-center text-gray-600 font-semibold">
+      <div v-if="serverMessage" class="text-center text-red-600 font-semibold bg-red-50 p-3 rounded-lg">
         {{ serverMessage }}
       </div>
 
       <!-- Social Sign-Up Buttons -->
-      <div class="mt-4 space-y-2">
+      <div class="mt-4 space-y-4">
         <button
-          class="flex items-center justify-center w-full p-2 border border-gray-300 rounded-lg hover:bg-gray-100"
+          class="flex items-center justify-center w-full p-3 border border-gray-300 rounded-lg hover:bg-gray-100 transition-colors group"
           :disabled="isLoading"
         >
           <img
             v-lazy="'/img/icons/common/google.svg'"
             alt="Google"
-            class="w-5 h-5 mr-2"
+            class="w-6 h-6 mr-3"
           />
-          Sign up with Google
+          <span class="text-gray-700 group-hover:text-teal-600 transition-colors">
+            Sign up with Google
+          </span>
         </button>
+      </div>
+
+      <!-- Divider -->
+      <div class="relative my-6">
+        <div class="absolute inset-0 flex items-center">
+          <div class="w-full border-t border-gray-300"></div>
+        </div>
+        <div class="relative flex justify-center text-sm">
+          <span class="px-2 bg-white text-gray-500">
+            Or sign up with email
+          </span>
+        </div>
       </div>
 
       <!-- Sign-Up Form -->
@@ -123,13 +137,13 @@ const handleSubmit = async (values) => {
             type="email"
             id="email"
             name="email"
-            class="w-full p-2.5 border border-gray-300 rounded-lg bg-gray-50 text-gray-900 focus:ring-secondary focus:border-secondary"
+            class="w-full p-3 border border-gray-300 rounded-lg bg-gray-50 text-gray-900 focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all duration-300"
             placeholder="name@company.com"
             :disabled="isLoading"
           />
           <ErrorMessage name="email" v-slot="{ message }">
             <span class="flex items-center text-red-500 font-semibold mt-1">
-              <i class="pi pi-exclamation-circle mr-2 text-lg sm:text-base"></i>
+              <i class="pi pi-exclamation-circle mr-2 text-lg text-red-500"></i>
               {{ message }}
             </span>
           </ErrorMessage>
@@ -147,13 +161,13 @@ const handleSubmit = async (values) => {
             type="password"
             id="password"
             name="password"
-            class="w-full p-2.5 border border-gray-300 rounded-lg bg-gray-50 text-gray-900 focus:ring-secondary focus:border-secondary"
+            class="w-full p-3 border border-gray-300 rounded-lg bg-gray-50 text-gray-900 focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all duration-300"
             placeholder="••••••••"
             :disabled="isLoading"
           />
           <ErrorMessage name="password" v-slot="{ message }">
             <span class="flex items-center text-red-500 font-semibold mt-1">
-              <i class="pi pi-exclamation-circle mr-2 text-lg sm:text-base"></i>
+              <i class="pi pi-exclamation-circle mr-2 text-lg text-red-500"></i>
               {{ message }}
             </span>
           </ErrorMessage>
@@ -171,13 +185,13 @@ const handleSubmit = async (values) => {
             type="password"
             id="confirm-password"
             name="confirmPassword"
-            class="w-full p-2.5 border border-gray-300 rounded-lg bg-gray-50 text-gray-900 focus:ring-secondary focus:border-secondary"
+            class="w-full p-3 border border-gray-300 rounded-lg bg-gray-50 text-gray-900 focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all duration-300"
             placeholder="••••••••"
             :disabled="isLoading"
           />
           <ErrorMessage name="confirmPassword" v-slot="{ message }">
             <span class="flex items-center text-red-500 font-semibold mt-1">
-              <i class="pi pi-exclamation-circle mr-2 text-lg sm:text-base"></i>
+              <i class="pi pi-exclamation-circle mr-2 text-lg text-red-500"></i>
               {{ message }}
             </span>
           </ErrorMessage>
@@ -189,12 +203,15 @@ const handleSubmit = async (values) => {
             <input
               type="checkbox"
               v-model="acceptedTerms"
-              class="w-4 h-4 text-secondary border-gray-300 rounded focus:ring-secondary"
+              class="w-4 h-4 text-teal-600 border-gray-300 rounded focus:ring-teal-500 focus:ring-2"
               :disabled="isLoading"
             />
             <span class="ml-2 text-sm text-gray-500">
               I accept the
-              <a href="#" class="font-medium text-secondary hover:underline">
+              <a 
+                href="#" 
+                class="font-medium text-teal-600 hover:text-teal-800 hover:underline transition-colors"
+              >
                 Terms and Conditions
               </a>
             </span>
@@ -204,20 +221,26 @@ const handleSubmit = async (values) => {
         <!-- Sign-Up Button -->
         <button
           type="submit"
-          class="w-full px-5 py-2.5 text-sm font-medium text-white bg-secondary rounded-lg hover:bg-blue-900 focus:ring-4 focus:outline-none focus:ring-secondary flex items-center justify-center"
+          class="w-full px-5 py-3 text-sm font-medium text-white bg-gradient-to-r from-teal-500 to-blue-500 rounded-lg hover:from-teal-600 hover:to-blue-600 focus:ring-4 focus:outline-none focus:ring-teal-300 transition-all duration-300 transform hover:scale-[1.02] flex items-center justify-center"
           :disabled="isLoading || !acceptedTerms"
         >
           <span v-if="!isLoading">Create an account</span>
-          <span v-else>Processing...</span>
+          <span v-else class="flex items-center">
+            <svg class="animate-spin h-5 w-5 mr-2 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+            Processing...
+          </span>
         </button>
       </Form>
 
       <!-- Login Link -->
-      <p class="text-sm text-center text-gray-500 mt-4">
+      <p class="text-sm text-center text-gray-500 mt-6">
         Already have an account?
         <button
           @click="switchToLogin"
-          class="font-medium text-secondary hover:underline"
+          class="font-medium text-teal-600 hover:text-teal-800 hover:underline transition-colors"
           :disabled="isLoading"
         >
           Login here
@@ -227,7 +250,7 @@ const handleSubmit = async (values) => {
       <!-- Close Button -->
       <button
         @click="closeModal"
-        class="absolute top-4 right-4 text-gray-500 hover:text-gray-800"
+        class="absolute top-4 right-4 text-gray-500 hover:text-teal-600 transition-colors p-2 rounded-full"
         :disabled="isLoading"
       >
         ✕

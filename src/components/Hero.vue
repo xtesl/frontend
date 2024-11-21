@@ -38,7 +38,7 @@ import PrimaryButton from './navigators/buttons/PrimaryButton.vue';
             <div class="flex justify-start">
               <button
                 class="px-4 py-3 sm:px-8 sm:py-4 border-2 border-teal-500 
-                text-teal-500 hover:bg-teal-500 hover:text-white font-semibold rounded-md transition duration-300 ease-in-out"
+                text-teal-500 hover:bg-teal-500 hover:text-white font-bold rounded-md transition duration-300 ease-in-out"
               >
                 Start Your Journey
               </button>
