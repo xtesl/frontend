@@ -15,7 +15,7 @@
 
         <!-- Desktop Buttons -->
         <div class="flex items-center lg:order-2">
-          <template v-if="!isAuthenticated">
+          <template v-if="!authStore.isAuthenticated">
             <button @click="handleLoginClick"
               class="text-gray-700 hover:text-gray-900 transition-colors font-medium rounded-lg text-sm 
                      px-4 lg:px-5 py-2 lg:py-2.5 mr-2 hidden lg:block hover:bg-gray-50">
@@ -135,7 +135,7 @@
                 Contact
               </a>
             </li>
-            <li v-if="isAuthenticated">
+            <li v-if="authStore.isAuthenticated">
               <RouterLink to="#" 
                 class="block text-gray-700 hover:text-gray-900 transition-colors py-2"
                 @click="closeMobileMenu">
@@ -143,7 +143,7 @@
               </RouterLink>
             </li>
             <!-- Mobile Auth Buttons -->
-            <div class="pt-4 border-t border-gray-200" v-if="!isAuthenticated">
+            <div class="pt-4 border-t border-gray-200" v-if="!authStore.isAuthenticated">
               <button @click="handleLoginClick"
                 class="w-full mb-2 px-4 py-2 text-gray-700 hover:text-gray-900 transition-colors rounded-lg hover:bg-gray-50">
                 Log in
@@ -169,6 +169,10 @@
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue'
 import { RouterLink, useRouter } from 'vue-router'
+import { useAuthStore } from '@/stores';
+
+
+const authStore = useAuthStore();
 
 const props = defineProps({
   isAuthenticated: {
@@ -206,6 +210,9 @@ const handleSignupClick = () => {
 
 const handleSignout = () => {
   closeMobileMenu()
+  emit('signout');
+  authStore.logout();
+  router.push('/');
   // Implement your signout logic here
   console.log('Signing out...')
 }

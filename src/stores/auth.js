@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import axios from "axios";
+import apiClient from "@/api/axios";
 
 
 export const useAuthStore = defineStore('auth',  {
@@ -11,7 +11,8 @@ export const useAuthStore = defineStore('auth',  {
         async fetchUser() {
 
              try {
-                const response = await axios.get('http://localhost:5000/users');
+                const response = await apiClient.get("/user")
+                console.log(response.data)
                 this.isAuthenticated = true;
                 this.user = response.data.user;
              } catch (error) {
@@ -21,9 +22,9 @@ export const useAuthStore = defineStore('auth',  {
            
         },
 
-        logout() {
+        async logout() {
             //Backend call should be here
-            
+            const response = await apiClient.post("/logout");
            this.isAuthenticated = false;
            this.user = null;
         }

@@ -4,8 +4,12 @@ import axios from "axios";
 import * as yup from "yup";
 import { Form, Field, ErrorMessage } from "vee-validate";
 import { useRouter } from "vue-router";
-
+import apiClient from "@/api/axios";
 const router = useRouter();
+import { useAuthStore } from "@/stores";
+
+
+const authStore = useAuthStore();
 
 const schema = yup.object({
   email: yup.string().email("Invalid email format").required("Email is required"),
@@ -39,11 +43,14 @@ const handleSubmit = async (validatedData) => {
   const password = validatedData.password;
 
   try {
-    const response = await axios.get("http://localhost:5000/users");
-    const users = response.data;
-    const user = users.find(user => user.email == email);
-    if(user){
+    const response = await apiClient.post('/login', {
+      email: email,
+      password: password
+    });
+    
+    if(response.status == 200){
       emit("loginSuccess");
+      authStore.fetchUser();
       emit("close");
       router.push('/jobs');
     }

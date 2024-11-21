@@ -11,12 +11,15 @@ import VueLazyload from 'vue-lazyload'
 const app = createApp(App);
 const pinia = createPinia();
 
-// Initialise validation state
-// const authStore = useAuthStore();
-// authStore.fetchUser();
-
+// Middleware setup
+app.use(VueLazyload);
+app.use(pinia);
 app.use(router);
-app.use(pinia)
-app.use(VueLazyload)
-app.mount("#app");
 
+const initializeApp = async () => {
+  const authStore = useAuthStore();
+  await authStore.fetchUser(); // Wait for fetchUser to complete
+  app.mount("#app"); // Mount app after session check
+};
+
+initializeApp();

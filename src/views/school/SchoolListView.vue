@@ -1,6 +1,7 @@
 <script setup>
-import { ref, computed, onMounted, onUnmounted, watch } from 'vue';
+import { ref, computed, onMounted, watch } from 'vue';
 import Card from '@/components/Card.vue';
+import { useIntersectionObserver } from '@vueuse/core';
 
 const schools = ref([
   { id: 1, name: "University of Ghana", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRqOVFtx7JYH7b8A2jub1GxGnimcQObB_WmZg&s", rating: 4.7, studentsCount: 1500 },
@@ -18,32 +19,41 @@ const isLoading = ref(false);
 const hasMoreSchools = ref(true);
 const visibleSchools = ref([]);
 const currentPage = ref(1);
+const loadTriggerRef = ref(null);
 
-// Debounce setup
-let searchTimeout;
-const debounce = (func, delay) => {
-  clearTimeout(searchTimeout);
-  searchTimeout = setTimeout(func, delay);
+// Debounce implementation
+const debounce = (fn, delay) => {
+  let timeoutId = null;
+  return (...args) => {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => fn(...args), delay);
+  };
 };
 
-// Computed filtered schools with regex for flexible search
+// Computed filtered schools
 const filteredSchools = computed(() => {
-  const regex = new RegExp(debouncedQuery.value, 'i'); // Case-insensitive regex
-  return schools.value.filter(school => regex.test(school.name));
+  const query = debouncedQuery.value.toLowerCase();
+  if (!query) return schools.value;
+  
+  return schools.value.filter(school => 
+    school.name.toLowerCase().includes(query)
+  );
 });
 
-// Load more schools by appending to visibleSchools
+// Load more schools
 const loadMoreSchools = async () => {
+  if (isLoading.value || !hasMoreSchools.value) return;
+  
   isLoading.value = true;
-  await new Promise(resolve => setTimeout(resolve, 500)); // Simulate network delay
+  await new Promise(resolve => setTimeout(resolve, 500));
 
-  // Calculate the range for the new schools to add based on page
   const startIndex = (currentPage.value - 1) * pageSize;
   const newSchools = filteredSchools.value.slice(startIndex, startIndex + pageSize);
 
   if (newSchools.length) {
     visibleSchools.value.push(...newSchools);
     currentPage.value++;
+    hasMoreSchools.value = visibleSchools.value.length < filteredSchools.value.length;
   } else {
     hasMoreSchools.value = false;
   }
@@ -51,23 +61,14 @@ const loadMoreSchools = async () => {
   isLoading.value = false;
 };
 
-// Scroll handler
-const handleScroll = () => {
-  const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
-  if (scrollTop + clientHeight >= scrollHeight - 10 && !isLoading.value && hasMoreSchools.value) {
-    loadMoreSchools();
-  }
-};
+// Handle search
+const handleSearch = debounce(() => {
+  debouncedQuery.value = searchQuery.value.trim();
+  resetSearch();
+}, 300);
 
-// Watch for search input, applying debounce
-watch(searchQuery, () => {
-  debounce(() => {
-    debouncedQuery.value = searchQuery.value.trim();
-    resetSearch();
-  }, 300); // Debounce delay of 300ms
-});
+watch(searchQuery, handleSearch);
 
-// Reset search-related data on new search
 const resetSearch = () => {
   currentPage.value = 1;
   visibleSchools.value = [];
@@ -75,56 +76,146 @@ const resetSearch = () => {
   loadMoreSchools();
 };
 
-onMounted(() => {
-  window.addEventListener('scroll', handleScroll);
-  loadMoreSchools(); // Load initial schools
+// Setup intersection observer
+useIntersectionObserver(loadTriggerRef, ([{ isIntersecting }]) => {
+  if (isIntersecting) {
+    loadMoreSchools();
+  }
 });
 
-onUnmounted(() => {
-  window.removeEventListener('scroll', handleScroll);
+onMounted(() => {
+  loadMoreSchools();
 });
 </script>
 
 <template>
-  <div class="p-6 max-w-screen-xl mx-auto">
-    <h1 class="text-3xl font-semibold mb-6 text-center">Available Schools</h1>
-
-    <div class="flex justify-center mb-6">
-      <div class="flex items-center border border-gray-300 rounded-lg w-full lg:max-w-md p-2">
-        <i class="pi pi-search text-gray-500 mr-2"></i>
-        <input
-          v-model="searchQuery"
-          type="text"
-          placeholder="Search for a school..."
-          class="flex-grow outline-none text-gray-700"
-        />
+  <div class="min-h-screen bg-gradient-to-b from-teal-50 to-white">
+    <div class="p-4 sm:p-6 lg:p-8 max-w-7xl mx-auto">
+      <!-- Header -->
+      <div class="mb-8 text-center">
+        <h1 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
+          Discover Your Perfect University
+        </h1>
+        <p class="text-gray-600 max-w-2xl mx-auto">
+          Explore Ghana's top educational institutions and find the perfect match for your academic journey
+        </p>
       </div>
-    </div>
 
-    <div class="grid gap-8 grid-cols-1 lg:grid-cols-2">
-      <Card v-for="school in visibleSchools" :key="school.id" class="lg:max-w-2xl w-full">
-        <template #image>
-          <img :src="school.image" alt="School Image" class="w-full h-full object-cover" />
-        </template>
-        <template #content>
-          <h2 class="text-2xl font-bold text-gray-800">{{ school.name }}</h2>
-        </template>
-        <template #footer>
-          <div class="flex items-center justify-center md:justify-end space-x-1">
-            <i v-for="n in Math.floor(school.rating)" :key="n" class="pi pi-star text-yellow-500"></i>
-            <i v-if="school.rating % 1 !== 0" class="pi pi-star-half text-yellow-500"></i>
+      <!-- Search -->
+      <div class="flex justify-center mb-8">
+        <div class="relative w-full max-w-xl">
+          <div class="absolute inset-y-0 left-3 flex items-center pointer-events-none">
+            <i class="pi pi-search text-gray-400"></i>
           </div>
-          <span class="font-semibold block mt-1">Students: {{ school.studentsCount }}</span>
-        </template>
-      </Card>
-    </div>
+          <input
+            v-model="searchQuery"
+            type="text"
+            placeholder="Search for universities..."
+            class="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 shadow-sm focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all duration-200 outline-none"
+          />
+        </div>
+      </div>
 
-    <div v-if="isLoading" class="flex justify-center mt-6">
-      <div class="animate-spin h-6 w-6 border-4 border-blue-500 rounded-full border-t-transparent"></div>
-    </div>
+      <!-- Schools Grid -->
+      <div class="grid gap-6 sm:gap-8 grid-cols-1 lg:grid-cols-2 mb-8">
+        <div 
+          v-for="school in visibleSchools" 
+          :key="school.id"
+          class="bg-white rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden"
+        >
+          <!-- School Card Content -->
+          <div class="flex flex-col h-full">
+            <!-- Image Container -->
+            <div class="relative w-full h-64">
+              <div class="absolute inset-0 bg-gray-200 animate-pulse"></div>
+              <img 
+                :src="school.image" 
+                :alt="school.name"
+                class="absolute inset-0 w-full h-full object-cover"
+                loading="lazy"
+              />
+            </div>
 
-    <div v-if="!hasMoreSchools && filteredSchools.length > 0" class="flex justify-center mt-6">
-      <p class="text-gray-600">No more schools to load.</p>
+            <!-- Content -->
+            <div class="p-6">
+              <h2 class="text-xl font-bold text-gray-900 mb-3">{{ school.name }}</h2>
+              
+              <div class="flex flex-wrap items-center justify-between gap-4">
+                <!-- Rating -->
+                <div class="flex items-center">
+                  <div class="flex">
+                    <i 
+                      v-for="n in Math.floor(school.rating)" 
+                      :key="n" 
+                      class="pi pi-star-fill text-yellow-400 text-lg"
+                    ></i>
+                    <i 
+                      v-if="school.rating % 1 !== 0" 
+                      class="pi pi-star text-yellow-400 text-lg"
+                    ></i>
+                  </div>
+                  <span class="ml-2 text-gray-600">({{ school.rating }})</span>
+                </div>
+
+                <!-- Students Count -->
+                <div class="flex items-center text-teal-600">
+                  <i class="pi pi-users mr-2"></i>
+                  <span>{{ school.studentsCount.toLocaleString() }} Students</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Loading Trigger -->
+      <div 
+        ref="loadTriggerRef"
+        class="h-10 flex items-center justify-center"
+      >
+        <div v-if="isLoading" class="flex items-center space-x-2">
+          <div class="w-2 h-2 bg-teal-500 rounded-full animate-bounce"></div>
+          <div class="w-2 h-2 bg-teal-500 rounded-full animate-bounce" style="animation-delay: 0.2s"></div>
+          <div class="w-2 h-2 bg-teal-500 rounded-full animate-bounce" style="animation-delay: 0.4s"></div>
+        </div>
+        <p v-else-if="!hasMoreSchools" class="text-gray-500 text-sm">
+          {{ visibleSchools.length ? 'No more schools to load' : 'No schools found' }}
+        </p>
+      </div>
     </div>
   </div>
 </template>
+
+<style scoped>
+/* Loading animation */
+@keyframes pulse {
+  0%, 100% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}
+
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+.animate-bounce {
+  animation: bounce 0.6s infinite;
+}
+
+/* Fix for PrimeIcons */
+.pi {
+  font-size: 1rem;
+}
+</style>
