@@ -5,7 +5,7 @@ import SchoolListView from "@/views/school/SchoolListView.vue";
 import CategoryView from "@/views/category/CategoryView.vue";
 import JobsView from "@/views/job/JobsView.vue";
 import { useAuthStore } from "@/stores";
-
+import JobDetails from "@/views/job/JobDetails.vue";
 
 const router = createRouter({
     history: createWebHashHistory(import.meta.env.BASE_URL),
@@ -25,6 +25,11 @@ const router = createRouter({
             name: "jobs",
             component: JobsView,
             meta: {requiresAuth: true}
+         },
+         {
+           path: "/job/:pk",
+           name: "jobDetails",
+           component: JobDetails
          },
         {
             path: "/categories/:category",

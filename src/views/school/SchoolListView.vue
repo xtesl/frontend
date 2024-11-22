@@ -83,16 +83,20 @@ useIntersectionObserver(loadTriggerRef, ([{ isIntersecting }]) => {
   }
 });
 
+const handleImageError = (event) => {
+  event.target.src = '/path-to-fallback-image.jpg'; // Add a fallback image path
+};
+
 onMounted(() => {
   loadMoreSchools();
 });
 </script>
 
 <template>
-  <div class="min-h-screen bg-gradient-to-b from-teal-50 to-white">
-    <div class="p-4 sm:p-6 lg:p-8 max-w-7xl mx-auto">
-      <!-- Header -->
-      <div class="mb-8 text-center">
+  <div class="min-h-screen bg-gradient-to-b from-teal-50 to-white mt-10">
+    <div class="p-4 sm:p-8 lg:p-8 max-w-7xl mx-auto">
+      <!-- Header section -->
+      <div class="mb-8 mt-8 text-center">
         <h1 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
           Discover Your Perfect University
         </h1>
@@ -101,7 +105,7 @@ onMounted(() => {
         </p>
       </div>
 
-      <!-- Search -->
+      <!-- Search section -->
       <div class="flex justify-center mb-8">
         <div class="relative w-full max-w-xl">
           <div class="absolute inset-y-0 left-3 flex items-center pointer-events-none">
@@ -116,29 +120,28 @@ onMounted(() => {
         </div>
       </div>
 
-      <!-- Schools Grid -->
-      <div class="grid gap-6 sm:gap-8 grid-cols-1 lg:grid-cols-2 mb-8">
+      <!-- Modified Schools Grid -->
+      <div class="grid gap-6 sm:gap-8 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-8">
         <div 
           v-for="school in visibleSchools" 
           :key="school.id"
           class="bg-white rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden"
         >
-          <!-- School Card Content -->
           <div class="flex flex-col h-full">
-            <!-- Image Container -->
-            <div class="relative w-full h-64">
-              <div class="absolute inset-0 bg-gray-200 animate-pulse"></div>
-              <img 
-                :src="school.image" 
-                :alt="school.name"
-                class="absolute inset-0 w-full h-full object-cover"
-                loading="lazy"
-              />
-            </div>
+            <!-- Responsive Image -->
+            <div class="relative w-full h-48 bg-gray-100">
+  <img 
+    :src="school.image" 
+    :alt="school.name"
+    class="w-full h-full object-contain" 
+    loading="lazy"
+    @error="handleImageError"
+  />
+</div>
 
             <!-- Content -->
-            <div class="p-6">
-              <h2 class="text-xl font-bold text-gray-900 mb-3">{{ school.name }}</h2>
+            <div class="p-6 flex-1">
+              <h2 class="text-xl font-bold text-gray-900 mb-3 line-clamp-2">{{ school.name }}</h2>
               
               <div class="flex flex-wrap items-center justify-between gap-4">
                 <!-- Rating -->
@@ -147,22 +150,31 @@ onMounted(() => {
                     <i 
                       v-for="n in Math.floor(school.rating)" 
                       :key="n" 
-                      class="pi pi-star-fill text-yellow-400 text-lg"
+                      class="pi pi-star-fill text-yellow-400 text-sm"
                     ></i>
                     <i 
                       v-if="school.rating % 1 !== 0" 
-                      class="pi pi-star text-yellow-400 text-lg"
+                      class="pi pi-star text-yellow-400 text-sm"
                     ></i>
                   </div>
-                  <span class="ml-2 text-gray-600">({{ school.rating }})</span>
+                  <span class="ml-2 text-gray-600 text-sm">({{ school.rating }})</span>
                 </div>
 
                 <!-- Students Count -->
-                <div class="flex items-center text-teal-600">
+                <div class="flex items-center text-teal-600 text-sm">
                   <i class="pi pi-users mr-2"></i>
                   <span>{{ school.studentsCount.toLocaleString() }} Students</span>
                 </div>
               </div>
+            </div>
+
+            <!-- Read More Button -->
+            <div class="p-4 bg-gray-50 text-center">
+              <button
+                class="px-4 py-2 bg-teal-500 text-white rounded-lg shadow hover:bg-teal-600 focus:outline-none focus:ring-2 focus:ring-teal-400 focus:ring-offset-2 transition"
+              >
+                Read More
+              </button>
             </div>
           </div>
         </div>
@@ -186,7 +198,16 @@ onMounted(() => {
   </div>
 </template>
 
+
 <style scoped>
+/* Previous styles remain */
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
 /* Loading animation */
 @keyframes pulse {
   0%, 100% {
