@@ -7,9 +7,9 @@
       <div class="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl px-4 lg:px-6 py-4">
         <!-- Logo -->
         <a href="/" class="flex items-center space-x-3" @click="closeMobileMenu">
-          <img src="https://flowbite.com/docs/images/logo.svg" class="h-8 w-auto" alt="Flowbite Logo" />
+          <img src="/bloopra_logo.svg" class="h-8 w-auto" alt="Flowbite Logo" />
           <span class="text-xl font-bold bg-gradient-to-r from-teal-500 to-blue-500 text-transparent bg-clip-text">
-            Flowbite
+            {{ COMPANY_NAME }}
           </span>
         </a>
 
@@ -170,6 +170,7 @@
 import { ref, onMounted, onUnmounted } from 'vue'
 import { RouterLink, useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores';
+import { COMPANY_NAME } from '@/utils/constants';
 
 
 const authStore = useAuthStore();

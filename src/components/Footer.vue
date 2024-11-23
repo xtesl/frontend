@@ -8,16 +8,16 @@
     <footer class="bg-gradient-to-br from-gray-50 to-white border-t border-gray-100 py-12 mt-auto">
       <div class="container mx-auto px-4">
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {/* Logo and Branding Section */}
+          
           <div class="flex flex-col items-start space-y-4">
             <div class="flex items-center space-x-3">
               <img 
-                src="" 
-                alt="Shelfie Logo" 
+                src="/bloopra_logo.svg" 
+                alt="Logo" 
                 class="h-10 w-10 rounded-lg"
               />
               <span class="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-teal-500 to-blue-500">
-                Shelfie
+                {{ COMPANY_NAME }}
               </span>
             </div>
             <p class="text-gray-600 text-sm leading-relaxed">
@@ -25,7 +25,7 @@
             </p>
           </div>
 
-          {/* Quick Links */}
+          
           <div class="grid grid-cols-2 gap-4">
             <div>
               <h4 class="font-semibold text-gray-800 mb-4">Company</h4>
@@ -75,7 +75,7 @@
             </div>
           </div>
 
-          {/* Contact and Social */}
+          
           <div class="space-y-4">
             <h4 class="font-semibold text-gray-800 mb-4">Get in Touch</h4>
             <div class="flex space-x-4">
@@ -132,10 +132,8 @@
   </div>
 </template>
 
-<script>
-export default {
-  name: 'AppFooter'
-}
+<script setup>
+  import { COMPANY_NAME } from "@/utils/constants";
 </script>
 
 <style scoped>

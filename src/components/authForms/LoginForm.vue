@@ -7,6 +7,7 @@ import { useRouter } from "vue-router";
 import apiClient from "@/api/axios";
 const router = useRouter();
 import { useAuthStore } from "@/stores";
+import { COMPANY_NAME } from "@/utils/constants";
 
 
 const authStore = useAuthStore();
@@ -86,11 +87,13 @@ const handleSubmit = async (validatedData) => {
         class="flex items-center justify-center mb-6 text-2xl font-semibold text-gray-900"
       >
         <img
-          class="w-10 h-10 mr-2 bg-gradient-to-br from-teal-500 to-blue-500 rounded-full p-2"
-          v-lazy="'https://flowbite.s3.amazonaws.com/blocks/marketing-ui/logo.svg'"
+          class="w-12 h-10 mr-2 rounded-full p-2"
+          v-lazy="'/bloopra_logo.svg'"
           alt="logo"
         />
-        Shelfie
+        <span class="font-bold text-transparent bg-clip-text bg-gradient-to-r from-teal-500 to-blue-500"> 
+          {{ COMPANY_NAME }}
+        </span>
       </RouterLink>
 
       <h1 class="text-2xl font-bold text-gray-900 text-center mb-4">
