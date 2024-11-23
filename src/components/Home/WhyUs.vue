@@ -1,9 +1,7 @@
-<script>
-export default {
-  name: 'WhyChooseSection',
-  data() {
-    return {
-      reasons: [
+<script setup>
+import { COMPANY_NAME } from '@/utils/constants';
+
+     const  reasons = [
         {
           title: 'Access to Student Talent',
           description: 'Employers can tap into a pool of highly skilled and motivated student freelancers eager to work and learn.',
@@ -26,9 +24,7 @@ export default {
           backgroundGradient: 'from-amber-50 to-amber-100'
         }
       ]
-    };
-  }
-}
+
 </script>
 
 <template>
@@ -36,7 +32,7 @@ export default {
     <div class="container-xl mx-auto px-4 relative z-10">
       <div class="text-center mb-12">
         <h1 class="text-4xl font-extrabold text-gray-900 mb-4 tracking-tight">
-          Why Choose <span class="text-transparent bg-clip-text bg-gradient-to-r from-teal-500 to-blue-500">Shelfie?</span>
+          Why Choose <span class="text-transparent bg-clip-text bg-gradient-to-r from-teal-500 to-blue-500">{{ COMPANY_NAME }}?</span>
         </h1>
         <p class="text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed">
           Bridging the gap between ambitious student talent and innovative employers with a platform designed for mutual growth.
@@ -51,7 +47,7 @@ export default {
         >
           <div 
             class="relative transform transition-all duration-500 
-            bg-white rounded-2xl shadow-xl overflow-hidden 
+            bg-white rounded-2xl shadow overflow-hidden 
             hover:-translate-y-4 hover:rotate-1 
             border border-transparent hover:border-gradient-to-r 
             hover:border-opacity-50"

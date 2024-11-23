@@ -112,7 +112,7 @@
                 <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                 </svg>
-                <span>hello@shelfie.com</span>
+                <span>hello@bloopra.com</span>
               </a>
             </div>
           </div>
@@ -120,7 +120,7 @@
 
         <div class="mt-12 pt-8 border-t border-gray-200 text-center">
           <p class="text-sm text-gray-600">
-            © {{ new Date().getFullYear() }} Shelfie™ 
+            © {{ new Date().getFullYear() }} {{ COMPANY_NAME }}™ 
             <span class="mx-2">·</span> 
             All Rights Reserved 
             <span class="mx-2">·</span>

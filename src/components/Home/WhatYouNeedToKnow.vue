@@ -5,12 +5,12 @@
     <div class="max-w-full sm:max-w-md lg:max-w-4xl mx-auto bg-gradient-to-r from-teal-500 via-blue-500 to-teal-600 rounded-lg shadow-lg p-6 sm:p-8">
       <!-- Heading -->
       <h2 class="text-2xl sm:text-3xl font-bold text-white mb-4 leading-tight">
-        What You Need to Know About Shelfie
+        What You Need to Know About {{ COMPANY_NAME }}
       </h2>
       <!-- Description -->
       <p class="text-base sm:text-lg text-white mb-6 leading-relaxed">
-        Shelfie is a unique platform that connects talented students with employers looking for fresh skills and innovative solutions.
-        Whether you're a student seeking freelance opportunities or an employer searching for the right talent, Shelfie is the place for you.
+        {{ COMPANY_NAME }} is a unique platform that connects talented students with employers looking for fresh skills and innovative solutions.
+        Whether you're a student seeking freelance opportunities or an employer searching for the right talent, {{ COMPANY_NAME }} is the place for you.
       </p>
       <!-- Learn More Link -->
       <RouterLink
@@ -25,7 +25,7 @@
   </template>
   
   <script setup>
-  // No script needed for this simple section
+  import { COMPANY_NAME } from '@/utils/constants';
   </script>
   
   <style scoped>

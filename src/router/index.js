@@ -6,6 +6,7 @@ import CategoryView from "@/views/category/CategoryView.vue";
 import JobsView from "@/views/job/JobsView.vue";
 import { useAuthStore } from "@/stores";
 import JobDetails from "@/views/job/JobDetails.vue";
+import UserProfilePage from "@/views/user/profile/UserProfilePage.vue";
 
 const router = createRouter({
     history: createWebHashHistory(import.meta.env.BASE_URL),
@@ -36,6 +37,13 @@ const router = createRouter({
             name: "categories",
             component: CategoryView
           },
+
+          {
+             path: "/user/profile",
+             name: "freelanceerProfile",
+             component: UserProfilePage
+
+          },
         
         {
             path: "/:catchAll(.*)",
@@ -62,13 +70,14 @@ const router = createRouter({
 
 
 // Global navigation guard
-// router.beforeEach((to, from, next) => {
-//      const authStore = useAuthStore();
-//      if(to.meta.requiresAuth && !authStore.isAuthenticated){
-//         next({ name: "home"});
-//      }else{
-//         next();
-//      }
-// });
+router.beforeEach((to, from, next) => {
+     const authStore = useAuthStore();
+     if(to.meta.requiresAuth && !authStore.isAuthenticated){
+      console.log('Unauthenticated!')
+        next({ name: "home"});
+     }else{
+        next();
+     }
+});
 
 export default router;
