@@ -6,6 +6,14 @@ import FAQs from '@/components/Home/FAQs.vue';
 import WhatYouNeedToKnow from '@/components/Home/WhatYouNeedToKnow.vue';
 import PrimaryButton from '@/components/navigators/buttons/PrimaryButton.vue';
 import HeroCategories from '@/components/Home/HeroCategories.vue';
+import JoinUs from '@/components/Home/JoinUs.vue';
+import Works from '@/components/Home/Works.vue';
+import Footer from '@/components/Footer.vue';
+import Illustration from '@/components/Home/Illustration.vue';
+import LetsWork from '@/components/Home/LetsWork.vue';
+import Schools from '@/components/Home/Schools.vue';
+import Pricing from '@/components/Home/Pricing.vue';
+
 
 
 const faqs = [ { question: "What is Bloopra?", 
@@ -27,10 +35,11 @@ answer: "Bloopra charges a small commission on completed projects, both from fre
 <WhyUs />
 <FAQs :faqs="faqs"/>
 <WhatYouNeedToKnow />
-<div class="flex flex-col space-y-4 items-center justify-center p-4"> 
-    <PrimaryButton variant="primary" size="lg">
-    Join Now
-</PrimaryButton>
-</div>
+<JoinUs />
+<Works />
+<Illustration />
 
+ <Schools />
+ <Pricing />
+ <LetsWork />
 </template>

@@ -2,7 +2,7 @@
   <header>
     <nav
       :class="[
-        'fixed w-full z-20 top-0 start-0 transition-all duration-300',
+        'fixed w-full z-20 top-0 start-0 transition-all  shadow duration-300',
         isScrolled ? 'bg-white shadow-lg' : 'bg-white',
       ]"
     >
@@ -55,13 +55,13 @@
 >
   <ul class="flex flex-col py-4 space-y-2 px-4">
     <li>
-      <a
-        href="#"
+      <RouterLink
+        to="/user/profile"
         class="flex items-center space-x-3 text-gray-700 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-all py-2 px-3"
       >
         <i class="pi pi-user text-teal-500 text-lg"></i>
         <span>Profile</span>
-      </a>
+      </RouterLink>
     </li>
     <li>
       <a
@@ -71,6 +71,15 @@
         <i class="pi pi-cog text-teal-500 text-lg"></i>
         <span>Settings</span>
       </a>
+    </li>
+    <li>
+      <RouterLink
+        to="/user/fr/Dashboard"
+        class="flex items-center space-x-3 text-gray-700 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-all py-2 px-3"
+      >
+        <i class="pi pi-th-large text-teal-500 text-lg"></i>
+        <span>Dashboard</span>
+      </RouterLink>
     </li>
     <li>
       <button
@@ -232,18 +241,54 @@
     </li>
 
     <!-- Account Icon -->
-    <li
-      v-if="authStore.isAuthenticated"
-      class="flex justify-center py-4 border-t border-gray-200"
-    >
-      <RouterLink
-        to="#"
-        class="flex items-center justify-center w-12 h-12 rounded-full bg-gradient-to-r from-teal-500 to-blue-500 text-white hover:opacity-90 transition-opacity"
-        @click="closeMobileMenu"
-      >
-        <i class="pi pi-user text-2xl"></i>
-      </RouterLink>
-    </li>
+    <!-- Account Dropdown for Mobile -->
+<li
+  v-if="authStore.isAuthenticated"
+  class="relative flex justify-center py-4 border-t border-gray-200"
+>
+  <button
+    @click="toggleDropdown"
+    class="flex items-center justify-center w-12 h-12 rounded-full bg-gradient-to-r from-teal-500 to-blue-500 text-white hover:opacity-90 transition-opacity"
+  >
+    <i class="pi pi-user text-2xl"></i>
+  </button>
+
+  <div
+    v-show="isDropdownOpen"
+    class="absolute top-[70px] right-1/2 transform translate-x-1/2 w-56 bg-white shadow-lg border border-gray-200 rounded-lg z-50"
+  >
+    <ul class="flex flex-col py-4 space-y-2 px-4">
+      <li>
+        <RouterLink
+          to="/user/profile"
+          class="flex items-center space-x-3 text-gray-700 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-all py-2 px-3"
+        >
+          <i class="pi pi-user text-teal-500 text-lg"></i>
+          <span>Profile</span>
+        </RouterLink>
+      </li>
+      <li>
+        <a
+          href="#"
+          class="flex items-center space-x-3 text-gray-700 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-all py-2 px-3"
+        >
+          <i class="pi pi-cog text-teal-500 text-lg"></i>
+          <span>Settings</span>
+        </a>
+      </li>
+      <li>
+        <RouterLink
+          to="/user/fr/Dashboard"
+          class="flex items-center space-x-3 text-gray-700 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-all py-2 px-3"
+        >
+          <i class="pi pi-th-large text-teal-500 text-lg"></i>
+          <span>Dashboard</span>
+        </RouterLink>
+      </li>
+    </ul>
+  </div>
+</li>
+
 
     <!-- Auth Buttons -->
     <div
@@ -263,6 +308,9 @@
         <i class="pi pi-user-plus mr-2"></i> Get started
       </button>
     </div>
+
+
+
 
     <button
       v-else

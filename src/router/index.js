@@ -7,6 +7,9 @@ import JobsView from "@/views/job/JobsView.vue";
 import { useAuthStore } from "@/stores";
 import JobDetails from "@/views/job/JobDetails.vue";
 import UserProfilePage from "@/views/user/profile/UserProfilePage.vue";
+import Dashboard from "@/views/user/freelancer/Dashboard.vue";
+import EmDashboard from "@/views/user/employer/EmDashboard.vue";
+import Profile from "@/views/user/freelancer/Profile.vue";
 
 const router = createRouter({
     history: createWebHashHistory(import.meta.env.BASE_URL),
@@ -43,6 +46,23 @@ const router = createRouter({
              name: "freelanceerProfile",
              component: UserProfilePage
 
+          },
+          {
+            path: "/fr/profile",
+            component: Profile,
+             name: "profile"
+          },
+
+          {
+
+           path: "/user/fr/dashboard",
+           component: Dashboard,
+           name: "freelancerDashboard"
+          },
+          {
+            path: "/user/em/dashboard",
+            name: "EmployerDashbaord",
+            component: EmDashboard
           },
         
         {

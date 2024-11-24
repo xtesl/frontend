@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen bg-gray-50">
+  <div class="min-h-screen mt-20  bg-gray-50">
     <!-- Top Navigation -->
     <nav class="bg-white shadow-sm border-b border-gray-200">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -97,41 +97,42 @@
         <!-- Main Profile Content -->
         <div class="col-span-12 lg:col-span-9 space-y-6">
           <!-- Profile Header -->
-          <div class="bg-white p-6 rounded-lg shadow-sm">
-            <div class="sm:flex sm:items-center sm:justify-between">
-              <div class="sm:flex sm:space-x-8 items-center">
-                <div class="relative mb-4 sm:mb-0">
-                  <img
-                    :src="avatarPreview || userData.avatar"
-                    class="w-24 h-24 rounded-full object-cover border-4 border-teal-50"
-                    alt="User avatar"
-                  />
-                  <label class="absolute bottom-0 right-0 bg-teal-500 p-2 rounded-full cursor-pointer hover:bg-teal-600 transition-colors">
-                    <input
-                      type="file"
-                      class="hidden"
-                      accept="image/*"
-                      @change="handleAvatarChange"
-                    />
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
-                    </svg>
-                  </label>
-                </div>
-                <div>
-                  <h2 class="text-2xl font-bold text-gray-900">{{ userData.fullName }}</h2>
-                  <p class="text-sm text-gray-500">{{ userData.email }}</p>
-                  <p class="mt-1 text-sm text-gray-500">Member since {{ userData.joinDate }}</p>
-                </div>
-              </div>
-              <div class="mt-4 sm:mt-0">
-                <span class="inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium bg-teal-100 text-teal-800">
-                  Premium Member
-                </span>
-              </div>
-            </div>
-          </div>
+
+         <div class="bg-white p-6 rounded-lg shadow-sm">
+  <div class="sm:flex sm:items-center sm:justify-between">
+    <div class="sm:flex sm:space-x-8 items-center">
+      <div class="relative mb-4 sm:mb-0 inline-block">
+        <img
+          :src="avatarPreview || userData.avatar"
+          class="w-24 h-24 rounded-full object-cover border-4 border-teal-50"
+          alt="User avatar"
+        />
+        <label class="absolute -bottom-2 -right-2 bg-teal-500 p-2 rounded-full cursor-pointer hover:bg-teal-600 transition-colors">
+          <input
+            type="file"
+            class="hidden"
+            accept="image/*"
+            @change="handleAvatarChange"
+          />
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
+          </svg>
+        </label>
+      </div>
+      <div>
+        <h2 class="text-2xl font-bold text-gray-900">{{ userData.fullName }}</h2>
+        <p class="text-sm text-gray-500">{{ userData.email }}</p>
+        <p class="mt-1 text-sm text-gray-500">Member since {{ userData.joinDate }}</p>
+      </div>
+    </div>
+    <div class="mt-4 sm:mt-0">
+      <span class="inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium bg-teal-100 text-teal-800">
+        Premium Member
+      </span>
+    </div>
+  </div>
+</div>
 
           <!-- Profile Form -->
           <form @submit.prevent="saveChanges" class="bg-white rounded-lg shadow-sm">
@@ -306,18 +307,47 @@
                 <button
                   type="button"
                   @click="cancelChanges"
-                  class="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500"
+                  :disabled="isLoading"
+                  class="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  class="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-teal-500 hover:bg-teal-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500"
+                  :disabled="isLoading"
+                  class="relative px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-teal-500 hover:bg-teal-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500 disabled:opacity-50 disabled:cursor-not-allowed min-w-[5rem]"
                 >
-                  Save Changes
+                  <span :class="{ 'invisible': isLoading }">Save Changes</span>
+                  <!-- Loading Spinner -->
+                  <div
+                    v-if="isLoading"
+                    class="absolute inset-0 flex items-center justify-center"
+                  >
+                    <svg
+                      class="animate-spin h-5 w-5 text-white"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                    >
+                      <circle
+                        class="opacity-25"
+                        cx="12"
+                        cy="12"
+                        r="10"
+                        stroke="currentColor"
+                        stroke-width="4"
+                      ></circle>
+                      <path
+                        class="opacity-75"
+                        fill="currentColor"
+                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                      ></path>
+                    </svg>
+                  </div>
                 </button>
               </div>
             </div>
+
           </form>
         </div>
       </div>
@@ -327,6 +357,9 @@
 
 <script setup>
 import { ref, reactive, computed } from 'vue';
+
+
+const isLoading = ref(false);
 
 // Initial user data
 const userData = reactive({
@@ -384,9 +417,12 @@ const togglePasswordChange = () => {
     passwordData.confirmPassword = '';
   }
 };
-
 const saveChanges = async () => {
+  if (isLoading.value) return;
+
   try {
+    isLoading.value = true;
+
     if (showPasswordChange.value) {
       // Validate password requirements
       if (!Object.values(passwordStrength.value).every(Boolean)) {
@@ -399,7 +435,10 @@ const saveChanges = async () => {
       }
     }
 
-    // Here you would make an API call to save changes
+    // Simulate API call with delay
+    await new Promise(resolve => setTimeout(resolve, 1500));
+
+    // Here you would make your actual API call to save changes
     Object.assign(userData, formData);
     if (avatarPreview.value) {
       userData.avatar = avatarPreview.value;
@@ -410,10 +449,14 @@ const saveChanges = async () => {
   } catch (error) {
     alert('Error saving changes');
     console.error(error);
+  } finally {
+    isLoading.value = false;
   }
 };
 
 const cancelChanges = () => {
+  if (isLoading.value) return;
+  
   Object.assign(formData, userData);
   avatarPreview.value = null;
   showPasswordChange.value = false;
