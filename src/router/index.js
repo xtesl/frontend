@@ -10,6 +10,7 @@ import UserProfilePage from "@/views/user/profile/UserProfilePage.vue";
 import Dashboard from "@/views/user/freelancer/Dashboard.vue";
 import EmDashboard from "@/views/user/employer/EmDashboard.vue";
 import Profile from "@/views/user/freelancer/Profile.vue";
+import LoginView from "@/views/auth/LoginView.vue";
 
 const router = createRouter({
     history: createWebHashHistory(import.meta.env.BASE_URL),
@@ -19,6 +20,11 @@ const router = createRouter({
             name: "home",
             component: HomeView,
         }, 
+        {
+           path: "/auth/login",
+           component: LoginView,
+           name: "login"
+        },
         {
           path: "/institutions",
           name: "institutions",
