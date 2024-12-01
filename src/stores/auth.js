@@ -24,7 +24,7 @@ export const useAuthStore = defineStore('auth',  {
 
         async logout() {
             //Backend call should be here
-            const response = await apiClient.post("/logout");
+            // const response = await apiClient.post("/logout");
            this.isAuthenticated = false;
            this.user = null;
         }

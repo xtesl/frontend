@@ -329,10 +329,12 @@
 <script setup>
 import { ref, onMounted, onUnmounted } from "vue";
 import { RouterLink, useRouter } from "vue-router";
-import { useAuthStore } from "@/stores";
+import { useAuthStore, useInteractionStore } from "@/stores";
 import { COMPANY_NAME } from "@/utils/constants";
 
 const authStore = useAuthStore();
+const interactionStore = useInteractionStore();
+
 
 const props = defineProps({
   isAuthenticated: {
@@ -368,12 +370,13 @@ const toggleMobileMenu = () => {
 // Handle auth actions with menu closing
 const handleLoginClick = () => {
   closeMobileMenu();
-  emit("open-login");
+  interactionStore.showAuthModal("login");
 };
 
 const handleSignupClick = () => {
   closeMobileMenu();
-  emit("open-signup");
+  interactionStore.showAuthModal('signup');
+  // emit("open-signup");
 };
 
 const handleSignout = () => {

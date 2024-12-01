@@ -6,11 +6,12 @@ import { Form, Field, ErrorMessage } from "vee-validate";
 import { useRouter } from "vue-router";
 import apiClient from "@/api/axios";
 const router = useRouter();
-import { useAuthStore } from "@/stores";
+import { useAuthStore, useInteractionStore } from "@/stores";
 import { COMPANY_NAME } from "@/utils/constants";
 
 
 const authStore = useAuthStore();
+const interactionStore = useInteractionStore();
 
 const schema = yup.object({
   email: yup.string().email("Invalid email format").required("Email is required"),
@@ -27,12 +28,13 @@ const serverMessage = ref("");
 
 const closeModal = () => {
   serverMessage.value = ''
-  emit("close");
+  interactionStore.closeAuthModal('login')
 };
 
 const switchToSignup = () => {
   emit("close");
-  emit("switchToSignup");
+  interactionStore.showSignupModal = true;
+  interactionStore.showLoginModal = false;
 };
 
 const handleSubmit = async (validatedData) => {
@@ -40,22 +42,30 @@ const handleSubmit = async (validatedData) => {
   isLoading.value = true;
   
   // submitted data
-  const email = validatedData.email;
-  const password = validatedData.password;
+  const formData = {
+    username: validatedData.email,
+    password: validatedData.password, 
+  }
+
+  const headers = {
+    "Content-Type": "application/x-www-form-urlencoded",
+  }
 
   try {
-    const response = await apiClient.post('/login', {
-      email: email,
-      password: password
+    const response = await apiClient.post("/auth/login/token", formData, {
+      headers: headers
     });
-    
-    if(response.status == 200){
-      emit("loginSuccess");
-      authStore.fetchUser();
-      emit("close");
+
+    if(response.status == 204){
+      console.log(response.status)
+      // emit("loginSuccess");
+      // authStore.fetchUser();
+      // emit("close");
+      closeModal()
+      authStore.isAuthenticated = true
       router.push('/jobs');
     }
-    serverMessage.value = response.data.message || "Login successful!";
+    serverMessage.value = "Login successful!";
   } catch (error) {
     console.error("Error during login:", error);
     serverMessage.value = error.response?.data?.message || "An error occurred during login.";
@@ -67,7 +77,7 @@ const handleSubmit = async (validatedData) => {
 
 <template>
 <div
-    v-if="show"
+    v-if="interactionStore.showLoginModal"
     class="fixed inset-0 z-50 flex items-center justify-center bg-gradient-to-br from-teal-100/50 to-teal-300/50"
   >
     <div

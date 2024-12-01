@@ -91,91 +91,105 @@ onMounted(() => {
 </script>
 
 
-
 <template>
-  <div class="max-w-screen-xl mx-auto px-4 pt-24 pb-8 lg:pt-28">
-    <div v-if="category" class="space-y-8">
-      <!-- Category Header with Image -->
-      <div class="relative h-48 sm:h-64 md:h-80 lg:h-96 rounded-lg overflow-hidden mb-8 shadow-lg">
-        <img v-lazy="category.image" :alt="route.params.category" class="w-full h-full object-cover">
-        <h1 class="absolute inset-0 bg-black/60 text-white text-2xl sm:text-3xl lg:text-4xl font-bold flex items-center justify-center p-4
-        stylish_font">
+  <div>
+    <!-- Full-Width Hero Section -->
+    <div class="relative w-full h-[50vh] sm:h-[60vh] md:h-[70vh] lg:h-[80vh] overflow-hidden">
+      <img 
+        v-lazy="category.image" 
+        :alt="route.params.category" 
+        class="absolute inset-0 w-full h-full object-cover"
+      >
+      <div class="absolute inset-0 bg-teal-500/60 flex items-center justify-center">
+        <h1 class="text-white text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-center px-4 stylish_font tracking-wide">
           {{ route.params.category }}
         </h1>
       </div>
-      <!-- Scrollable Subcategories Section -->
-      <div class="subcategories-container sm:flex sm:overflow-x-auto lg:overflow-x-auto sm:scrollbar-w-2 sm:scrollbar-thumb-gray-400 sm:scrollbar-track-gray-200 lg:scrollbar-w-2 lg:scrollbar-thumb-gray-400 lg:scrollbar-track-gray-200">
-        <div
-          v-for="subcategory in category.subcategories"
-          :key="subcategory.name"
-          class="subcategory-card sm:flex-shrink-0 lg:flex-shrink-0 sm:w-80 lg:w-80 xl:w-96 sm:mx-2 lg:mx-2"
-        >
-          <!-- Subcategory Image -->
-          <div class="relative h-40 sm:h-48 lg:h-56">
-            <img v-lazy="subcategory.image" :alt="subcategory.name" class="w-full h-full object-cover rounded-t-lg">
-          </div>
-          <div class="p-4">
-            <!-- Subcategory Title -->
-            <h2 class="text-lg sm:text-xl lg:text-2xl font-semibold mb-2">{{ subcategory.name }}</h2>
-            <!-- Services List -->
-            <ul class="space-y-1">
-              <li v-for="service in subcategory.services" :key="service" class="text-gray-700 text-sm sm:text-base lg:text-lg">
-                <RouterLink to="#" class="hover:underline">  
-                  • {{ service }}
-                </RouterLink> 
-              </li>
-            </ul>
+    </div>
+
+    <!-- Main Content Container -->
+    <div class="max-w-screen-xl mx-auto px-4 py-12 md:py-16 space-y-10">
+      <div v-if="category">
+        <!-- Scrollable Subcategories Section -->
+        <div class="subcategories-container">
+          <div 
+            class="flex overflow-x-auto space-x-6 pb-6"
+          >
+            <div
+              v-for="subcategory in category.subcategories"
+              :key="subcategory.name"
+              class="subcategory-card flex-shrink-0 w-80 bg-white border border-gray-200 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2"
+            >
+              <!-- Subcategory Image -->
+              <div class="relative h-56 overflow-hidden rounded-t-xl">
+                <img 
+                  v-lazy="subcategory.image" 
+                  :alt="subcategory.name" 
+                  class="w-full h-full object-cover transition-transform duration-300 hover:scale-110"
+                >
+              </div>
+              
+              <!-- Subcategory Content -->
+              <div class="p-5 space-y-3">
+                <h2 class="text-2xl font-bold text-teal-600 tracking-tight">
+                  {{ subcategory.name }}
+                </h2>
+                <ul class="space-y-2">
+                  <li 
+                    v-for="service in subcategory.services" 
+                    :key="service" 
+                    class="text-gray-700 text-base"
+                  >
+                    <RouterLink 
+                      to="#" 
+                      class="hover:text-teal-500 hover:underline transition-colors duration-200 flex items-center"
+                    >
+                      <span class="mr-2 text-teal-500">•</span>
+                      {{ service }}
+                    </RouterLink>
+                  </li>
+                </ul>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-    <!-- Message for Missing Category -->
-    <div v-else class="text-center p-8">
-      <p class="text-gray-600">Category not found.</p>
-    </div>
-    <div>
-      <FAQs :faqs="faqs" />
+
+      <!-- No Category Found Message -->
+      <div v-else class="text-center p-8">
+        <p class="text-gray-600 text-xl">Category not found.</p>
+      </div>
+
+      <!-- FAQs Section -->
+      <div>
+        <FAQs :faqs="faqs" />
+      </div>
     </div>
   </div>
 </template>
 
-
-
-
-
 <style scoped>
-.pt-24 {
-  padding-top: 6rem;
-}
-@media (min-width: 1024px) {
-  .lg\\:pt-28 {
-    padding-top: 7rem;
-  }
-}
+/* Scrollbar Styling */
 .subcategories-container {
-  display: flex;
-  overflow-x: auto;
-  padding-bottom: 1rem; /* Add some bottom padding */
+  scrollbar-width: thin;
+  scrollbar-color: theme('colors.teal.500') theme('colors.gray.200');
 }
+
+.subcategories-container::-webkit-scrollbar {
+  height: 8px;
+}
+
+.subcategories-container::-webkit-scrollbar-track {
+  background: theme('colors.gray.200');
+}
+
+.subcategories-container::-webkit-scrollbar-thumb {
+  background-color: theme('colors.teal.500');
+  border-radius: 20px;
+}
+
+/* Prevent text wrapping issues */
 .subcategory-card {
-  background-color: white;
-  border: 1px solid #e5e7eb; /* Tailwind border-gray-300 */
-  border-radius: 0.5rem;
-  overflow: hidden;
-  transition: transform 0.2s ease-in-out;
-  flex: 0 0 auto;
-  margin-right: 1rem; /* Add space between cards */
-}
-.subcategory-card:hover {
-  transform: scale(1.05);
-}
-.scrollbar-hidden {
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
-}
-.scrollbar-hidden::-webkit-scrollbar {
-  display: none; /* Chrome, Safari, Opera */
+  min-width: 300px;
 }
 </style>
-
-

@@ -11,13 +11,7 @@ export default defineConfig({
     vueJsx(),
   ],
   server: {
-    proxy: {
-      "/api": {
-        target: "http://localhost:4000",
-        changeOrigin: true,
-        secure: false,
-      },
-    },
+    proxy: "https://backend-53nt.onrender.com"
   },
   resolve: {
     alias: {

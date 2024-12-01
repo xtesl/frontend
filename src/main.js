@@ -18,7 +18,8 @@ app.use(router);
 
 const initializeApp = async () => {
   const authStore = useAuthStore();
-  await authStore.fetchUser(); // Wait for fetchUser to complete
+  console.log(authStore.isAuthenticated)
+  // await authStore.fetchUser(); // Wait for fetchUser to complete
   app.mount("#app"); // Mount app after session check
 };
 

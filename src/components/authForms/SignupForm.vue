@@ -4,6 +4,10 @@ import axios from "axios";
 import * as yup from "yup";
 import { Form, Field, ErrorMessage } from "vee-validate";
 import { COMPANY_NAME } from "@/utils/constants";
+import { useInteractionStore } from "@/stores";
+
+
+const interactionStore = useInteractionStore();
 
 const schema = yup.object({
   email: yup.string().email("Invalid email format").required("Email is required"),
@@ -25,12 +29,13 @@ const isLoading = ref(false);
 const serverMessage = ref("");
 
 const closeModal = () => {
-  emit("close");
+  interactionStore.closeAuthModal("signup");
 };
 
 const switchToLogin = () => {
   emit("close");
-  emit("switchToLogin");
+  interactionStore.showSignupModal = false;
+  interactionStore.showLoginModal = true;
 };
 
 const handleSubmit = async (values) => {
@@ -52,10 +57,9 @@ const handleSubmit = async (values) => {
   }
 };
 </script>
-
 <template>
- <div
-    v-if="show"
+  <div
+    v-if="interactionStore.showSignupModal"
     class="fixed inset-0 z-50 flex items-center justify-center bg-gradient-to-br from-teal-100/50 to-teal-300/50"
   >
     <div
@@ -128,6 +132,48 @@ const handleSubmit = async (values) => {
         :validation-schema="schema"
         @submit="handleSubmit"
       >
+        <!-- User Type Field -->
+        <div class="relative">
+          <label
+            for="user-type"
+            class="block mb-2 text-sm font-medium text-gray-900 flex items-center"
+          >
+            Account Type
+            <div 
+              class="ml-2 relative group cursor-help"
+            >
+              <i class="pi pi-info-circle text-gray-400 hover:text-teal-600 transition-colors"></i>
+              <div 
+                class="absolute z-10 bottom-full left-1/2 transform -translate-x-1/2 mb-2 w-64 p-3 bg-gray-800 text-white text-sm rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
+              >
+                <p class="text-xs">
+                  • Freelancer: For professionals offering services
+                  • Employer: For businesses or individuals hiring talent
+                  Choose the account type that best describes you
+                </p>
+              </div>
+            </div>
+          </label>
+          <Field
+            as="select"
+            name="userType"
+            id="user-type"
+            class="w-full p-3 border border-gray-300 rounded-lg bg-gray-50 text-gray-900 focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all duration-300"
+            :disabled="isLoading"
+            required
+          >
+            <option value="" disabled selected>Select Account Type</option>
+            <option value="freelancer">Freelancer</option>
+            <option value="employer">Employer</option>
+          </Field>
+          <ErrorMessage name="userType" v-slot="{ message }">
+            <span class="flex items-center text-red-500 font-semibold mt-1">
+              <i class="pi pi-exclamation-circle mr-2 text-lg text-red-500"></i>
+              {{ message }}
+            </span>
+          </ErrorMessage>
+        </div>
+
         <!-- Email Field -->
         <div>
           <label

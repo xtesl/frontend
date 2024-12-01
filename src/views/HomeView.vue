@@ -39,7 +39,7 @@ answer: "Bloopra charges a small commission on completed projects, both from fre
 <Works />
 <Illustration />
 
- <Schools />
+ <!-- <Schools /> -->
  <Pricing />
  <LetsWork />
 </template>
