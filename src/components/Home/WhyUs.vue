@@ -28,7 +28,7 @@ import { COMPANY_NAME } from '@/utils/constants';
 </script>
 
 <template>
-  <section class="py-16 bg-gradient-to-br from-gray-50 to-white relative overflow-hidden">
+  <section class="py-16 bg-gradient-to-br from-gray-50 to-white relative overflow-hidden" data-aos="fade-down">
     <div class="container-xl mx-auto px-4 relative z-10">
       <div class="text-center mb-12">
         <h1 class="text-4xl font-extrabold text-gray-900 mb-4 tracking-tight">

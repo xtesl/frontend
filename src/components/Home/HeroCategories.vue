@@ -40,7 +40,7 @@ const handlePrev = () => {
     </div>
 
     <!-- Content Container with Glass Effect - Centered with max width -->
-    <div class="relative max-w-screen-xl mx-auto">
+    <div data-aos="fade-down" class="relative max-w-screen-xl mx-auto">
         <!-- Stylized Heading -->
         <div class="text-center mb-12">
             <h1 class="text-4xl md:text-5xl font-black mb-2 text-transparent bg-clip-text bg-gradient-to-r from-teal-400 to-cyan-400">

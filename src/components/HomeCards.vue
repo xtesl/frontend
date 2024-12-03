@@ -1,5 +1,5 @@
 <template>
-  <div class="relative bg-gray-50 min-h-screen md:min-h-screen sm:min-h-[600px] overflow-hidden">
+  <div data-aos="zoom-in" class="relative bg-gray-50 min-h-screen md:min-h-screen sm:min-h-[600px] overflow-hidden">
     <!-- Enhanced Background Grid -->
     <div class="absolute inset-0 pointer-events-none">
       <div class="absolute inset-0 

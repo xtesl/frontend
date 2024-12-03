@@ -1,6 +1,6 @@
 <template>
-   <section class="py-16 bg-white">
-  <div class="container-xl mx-auto px-4 sm:px-6">
+   <section  class="py-16 bg-white">
+  <div class="container-xl mx-auto px-4 sm:px-6" data-aos="fade-right">
     <!-- Gradient Card with Adjusted Width and Responsive Design -->
     <div class="max-w-full sm:max-w-md lg:max-w-4xl mx-auto bg-gradient-to-r from-teal-500 via-blue-500 to-teal-600 rounded-lg shadow-lg p-6 sm:p-8">
       <!-- Heading -->

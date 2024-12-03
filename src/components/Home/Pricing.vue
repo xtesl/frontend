@@ -1,5 +1,5 @@
 <template>
-  <div class="relative max-w-7xl mx-auto px-4 py-16 sm:px-6 lg:px-8 overflow-hidden">
+  <div class="relative max-w-7xl mx-auto px-4 py-16 sm:px-6 lg:px-8 overflow-hidden" data-aos="fade-up">
     <!-- Background decoration -->
     <div class="absolute inset-0 bg-gradient-to-br from-teal-50 to-white -skew-y-3 transform origin-top-left"></div>
     
