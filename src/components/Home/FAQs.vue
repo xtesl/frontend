@@ -20,7 +20,7 @@ const toggleAnswer = (question) => {
 </script>
 
 <template>
-  <section class="py-20 bg-gradient-to-b from-white to-teal-50" data-aos="fade-left">
+  <section class="py-20 bg-gradient-to-b from-white to-teal-50" data-aos="zoom-in">
     <div class="container mx-auto px-4 sm:px-6 lg:px-8">
       <div class="text-center mb-12">
         <h1 class="text-4xl font-bold text-gray-900 mb-4">Frequently Asked Questions</h1>
