@@ -1,10 +1,10 @@
 <script setup>
 import { ref } from "vue";
-import axios from "axios";
 import * as yup from "yup";
-import { Form, Field, ErrorMessage } from "vee-validate";
 import { COMPANY_NAME } from "@/utils/constants";
 import { useInteractionStore } from "@/stores";
+import { Form, Field, ErrorMessage } from "vee-validate";
+import apiClient from "@/api/axios";
 
 
 const interactionStore = useInteractionStore();
@@ -21,9 +21,6 @@ const schema = yup.object({
 const props = defineProps(["show"]);
 const emit = defineEmits(["close", "switchToLogin"]);
 
-const email = ref("");
-const password = ref("");
-const confirmPassword = ref("");
 const acceptedTerms = ref(false);
 const isLoading = ref(false);
 const serverMessage = ref("");
@@ -38,7 +35,7 @@ const switchToLogin = () => {
   interactionStore.showLoginModal = true;
 };
 
-const handleSubmit = async (values) => {
+const handleSubmit = async (validatedData) => {
   if (!acceptedTerms.value) {
     serverMessage.value = "You must accept the Terms and Conditions!";
     return;
@@ -47,11 +44,10 @@ const handleSubmit = async (values) => {
   serverMessage.value = "";
   isLoading.value = true;
   try {
-    const response = await axios.post("http://localhost:8000/api/auth/signup", values);
+    const response = await apiClient.post("/user/")
     serverMessage.value = response.data.message || "Sign-up successful!";
   } catch (error) {
     console.error("Error during sign-up:", error);
-    serverMessage.value = error.response?.data?.message || "An error occurred during sign-up.";
   } finally {
     isLoading.value = false;
   }

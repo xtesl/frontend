@@ -1,10 +1,9 @@
 <script setup>
 import { ref } from "vue";
-import axios from "axios";
 import * as yup from "yup";
-import { Form, Field, ErrorMessage } from "vee-validate";
 import { useRouter } from "vue-router";
 import apiClient from "@/api/axios";
+import { Form, Field, ErrorMessage } from "vee-validate";
 const router = useRouter();
 import { useAuthStore, useInteractionStore } from "@/stores";
 import { COMPANY_NAME } from "@/utils/constants";
@@ -21,8 +20,6 @@ const schema = yup.object({
 const props = defineProps(["show"]);
 const emit = defineEmits(["close", "switchToSignup", "loginSuccess"]);
 
-const email = ref("");
-const password = ref("");
 const isLoading = ref(false);
 const serverMessage = ref("");
 
@@ -56,19 +53,25 @@ const handleSubmit = async (validatedData) => {
       headers: headers
     });
 
-    if(response.status == 204){
-      console.log(response.status)
-      // emit("loginSuccess");
-      // authStore.fetchUser();
-      // emit("close");
-      closeModal()
-      authStore.isAuthenticated = true
-      router.push('/jobs');
-    }
-    serverMessage.value = "Login successful!";
+      if(response.status == 204){
+        closeModal();
+        authStore.isAuthenticated = true;
+        router.push("/jobs");
+      }
   } catch (error) {
-    console.error("Error during login:", error);
-    serverMessage.value = error.response?.data?.message || "An error occurred during login.";
+    if(error.response){
+          switch(error.response.status){
+            case 400:
+              serverMessage.value = "Invalid credentials";
+              break;
+            case 500:
+              serverMessage.value = "Internal server error"
+          }
+    }else if(error.request){
+      serverMessage.value = "Network error";
+    }else{
+      serverMessage.value = "Something went wrong.Please try again later."
+    }
   } finally {
     isLoading.value = false;
   }

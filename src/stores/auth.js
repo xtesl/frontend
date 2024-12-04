@@ -11,10 +11,9 @@ export const useAuthStore = defineStore('auth',  {
         async fetchUser() {
 
              try {
-                const response = await apiClient.get("/user")
-                console.log(response.data)
+                const response = await apiClient.get("/user/me")
                 this.isAuthenticated = true;
-                this.user = response.data.user;
+                this.user = response.data;
              } catch (error) {
                 this.isAuthenticated = false;
                 this.user = null;
@@ -23,10 +22,16 @@ export const useAuthStore = defineStore('auth',  {
         },
 
         async logout() {
-            //Backend call should be here
-            // const response = await apiClient.post("/logout");
-           this.isAuthenticated = false;
-           this.user = null;
+            try {
+                 await apiClient.post("auth/logout");
+            } catch (error) {
+                //
+            }finally{
+                this.isAuthenticated = false;
+                this.user = null;
+            }
+           
+           
         }
     }
 });
