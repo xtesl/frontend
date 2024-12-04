@@ -23,8 +23,7 @@ AOS.init();
 
 const initializeApp = async () => {
   const authStore = useAuthStore();
-  console.log(authStore.isAuthenticated)
-  // await authStore.fetchUser(); // Wait for fetchUser to complete
+   await authStore.checkUserState();
   app.mount("#app"); // Mount app after session check
 };
 

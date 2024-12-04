@@ -36,6 +36,10 @@ const switchToLogin = () => {
 };
 
 const handleSubmit = async (validatedData) => {
+
+   serverMessage.value = "Internal server error";
+   console.log(validatedData)
+
   if (!acceptedTerms.value) {
     serverMessage.value = "You must accept the Terms and Conditions!";
     return;
@@ -295,7 +299,8 @@ const handleSubmit = async (validatedData) => {
       <!-- Close Button -->
       <button
         @click="closeModal"
-        class="absolute top-4 right-4 text-gray-500 hover:text-teal-600 transition-colors p-2 rounded-full"
+        class="absolute top-4 right-4 text-white bg-gradient-to-r from-teal-500 to-blue-500
+         hover:text-gray-500 transition-colors p-2 rounded-full"
         :disabled="isLoading"
       >
         ✕

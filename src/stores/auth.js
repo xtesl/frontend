@@ -8,15 +8,20 @@ export const useAuthStore = defineStore('auth',  {
         user: null
     }),
     actions: {
-        async fetchUser() {
+        async checkUserState() {
 
              try {
-                const response = await apiClient.get("/user/me")
-                this.isAuthenticated = true;
-                this.user = response.data;
+                const response = await apiClient.post("/auth/verifyToken");
+                console.log(response.status)
+                if (response.status == 204){
+                    console.log("Active")
+                    this.isAuthenticated = true;
+                }
+                
              } catch (error) {
+                console.log(error.response.data.detail)
                 this.isAuthenticated = false;
-                this.user = null;
+                
              }
            
         },
